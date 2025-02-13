@@ -20,13 +20,13 @@ public class PlayerMovement : MonoBehaviour
         //transform.position += moveVec * 20 * Time.deltaTime;
 
         body.MovePosition(body.position + (Vector2)moveVec * 20 * Time.deltaTime);
-        Debug.DrawLine(transform.position, moveVec * 20, Color.red, 600000);
+        //Debug.DrawLine(transform.position, moveVec * 20, Color.red, 600000);
 
 
-        if (Physics.Raycast(transform.position, moveVec, out RaycastHit hitinfo, 200))
+        /*if (Physics.Raycast(transform.position, moveVec, out RaycastHit hitinfo, 200))
         {
             Debug.DrawRay(transform.position, moveVec * 500, Color.red, 600000);
             
-        }
+        }*/
     }
 }
