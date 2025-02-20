@@ -5,17 +5,16 @@ using UnityEngine;
 public class GenerateGrass : MonoBehaviour
 {
     [SerializeField] private GameObject grass;
-    [SerializeField] private int sizeX;
-    [SerializeField] private int sizeY;
+    public GenerateWall walls;
     [SerializeField] private int gridOffset = 1;
     // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x < sizeX; x++)
+        for (int x = 0; x < walls.sizeX; x++)
         {
-            for (int y = 0; y < sizeY; y++)
+            for (int y = 0; y < walls.sizeY; y++)
             {
-                Vector2 pos = new Vector2(x * gridOffset, y * gridOffset);
+                Vector2 pos = new Vector2((walls.posX + x) * gridOffset, (walls.posY + y) * gridOffset);
                 GameObject tile = Instantiate(grass, pos, Quaternion.identity);
                 tile.transform.SetParent(this.transform);
             }

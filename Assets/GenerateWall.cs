@@ -12,8 +12,11 @@ public class GenerateWall : MonoBehaviour
     [SerializeField] private GameObject topRightCorner;
     [SerializeField] private GameObject bottomLeftCorner;
     [SerializeField] private GameObject bottomRightCorner;
-    [SerializeField] private int sizeX;
-    [SerializeField] private int sizeY;
+    [SerializeField] public int sizeX;
+    [SerializeField] public int sizeY;
+    [SerializeField] public int posX;
+    [SerializeField] public int posY;
+
     [SerializeField] private int gridOffset = 1;
     private GameObject currentSelection;
     // Start is called before the first frame update
@@ -23,7 +26,7 @@ public class GenerateWall : MonoBehaviour
         {
             for (int y = -1; y <= sizeY; y++)
             {
-                if (x == -1)
+                if (x == -1)    // checks if its the first column of room
                 {
                     if (y == -1)
                     {
@@ -38,7 +41,7 @@ public class GenerateWall : MonoBehaviour
                         currentSelection = leftWall;
                     }
                 }
-                else if (x == sizeX)
+                else if (x == sizeX)// checks if its the last column of room 
                 {
                     if (y == -1)
                     {
@@ -53,7 +56,7 @@ public class GenerateWall : MonoBehaviour
                         currentSelection = rightWall;
                     }
                 }
-                else
+                else          // Runs if its not the left or right wall/side
                 {
                     if (y == -1)
                     {
@@ -63,11 +66,17 @@ public class GenerateWall : MonoBehaviour
                     {
                         currentSelection = topWall;
                     }
+                    else
+                    {
+                        currentSelection = null;
+                    }
                 }
-
-                Vector2 pos = new Vector2(x * gridOffset, y * gridOffset);
-                GameObject tile = Instantiate(topWall, pos, Quaternion.identity);
-                tile.transform.SetParent(this.transform);
+                if (currentSelection != null)
+                {
+                    Vector2 pos = new Vector2((posX + x) * gridOffset, (posY + y) * gridOffset);
+                    GameObject tile = Instantiate(currentSelection, pos, Quaternion.identity);
+                    tile.transform.SetParent(this.transform);
+                }
             }
         }
     }
