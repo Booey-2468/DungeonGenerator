@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GenerateGrass : MonoBehaviour
 {
-    [SerializeField] private GameObject grass;
+    [SerializeField] private Tilemap backgroundTileMap;
+    [SerializeField] private Sprite grass;
+
     public GenerateWall walls;
     [SerializeField] private int gridOffset = 1;
+    private List<Vector3Int> tilePos = new List<Vector3Int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +18,9 @@ public class GenerateGrass : MonoBehaviour
         {
             for (int y = 0; y < walls.sizeY; y++)
             {
-                Vector2 pos = new Vector2((walls.posX + x) * gridOffset, (walls.posY + y) * gridOffset);
-                GameObject tile = Instantiate(grass, pos, Quaternion.identity);
-                tile.transform.SetParent(this.transform);
+                Vector3Int pos = new Vector3Int((walls.posX + x) * gridOffset, (walls.posY + y) * gridOffset, 0);
+                backgroundTileMap.SetTile(pos, new Tile() { sprite = grass });
+                tilePos.Add(pos);
             }
         }
     }

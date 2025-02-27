@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GenerateWall : MonoBehaviour
 {
-    [SerializeField] private GameObject topWall;
-    [SerializeField] private GameObject bottomWall;
-    [SerializeField] private GameObject leftWall;
-    [SerializeField] private GameObject rightWall;
-    [SerializeField] private GameObject topLeftCorner;
-    [SerializeField] private GameObject topRightCorner;
-    [SerializeField] private GameObject bottomLeftCorner;
-    [SerializeField] private GameObject bottomRightCorner;
+    [SerializeField] private Tilemap wallTilemap;
+    [SerializeField] private Sprite topWall;
+    [SerializeField] private Sprite bottomWall;
+    [SerializeField] private Sprite leftWall;
+    [SerializeField] private Sprite rightWall;
+    [SerializeField] private Sprite topLeftCorner;
+    [SerializeField] private Sprite topRightCorner;
+    [SerializeField] private Sprite bottomLeftCorner;
+    [SerializeField] private Sprite bottomRightCorner;
     [SerializeField] public int sizeX;
     [SerializeField] public int sizeY;
     [SerializeField] public int posX;
     [SerializeField] public int posY;
-
     [SerializeField] private int gridOffset = 1;
-    private GameObject currentSelection;
+    private List<Vector3Int> wallPos = new List<Vector3Int>();
+    private Sprite currentSelection;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,9 +75,9 @@ public class GenerateWall : MonoBehaviour
                 }
                 if (currentSelection != null)
                 {
-                    Vector2 pos = new Vector2((posX + x) * gridOffset, (posY + y) * gridOffset);
-                    GameObject tile = Instantiate(currentSelection, pos, Quaternion.identity);
-                    tile.transform.SetParent(this.transform);
+                    Vector3Int pos = new Vector3Int((posX + x) * gridOffset, (posY + y) * gridOffset, 0);
+                    wallTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
+                    wallPos.Add(pos);
                 }
             }
         }
