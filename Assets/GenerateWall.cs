@@ -19,8 +19,27 @@ public class GenerateWall : MonoBehaviour
     [SerializeField] public int posX;
     [SerializeField] public int posY;
     [SerializeField] private int gridOffset = 1;
-    private List<Vector3Int> wallPos = new List<Vector3Int>();
     private Sprite currentSelection;
+    
+    public GenerateWall(Tilemap wallTilemap, Sprite topWall, Sprite bottomWall, Sprite leftWall, Sprite rightWall, Sprite topLeftCorner, Sprite topRightCorner, Sprite bottomLeftCorner, Sprite bottomRightCorner, int sizeX, int sizeY, int posX, int posY, int gridOffset)
+    {
+        this.wallTilemap = wallTilemap;
+        this.topWall = topWall;
+        this.bottomWall = bottomWall;
+        this.leftWall = leftWall;
+        this.rightWall = rightWall;
+        this.topLeftCorner = topLeftCorner;
+        this.topRightCorner = topRightCorner;
+        this.bottomLeftCorner = bottomLeftCorner;
+        this.bottomRightCorner = bottomRightCorner;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.posX = posX;
+        this.posY = posY;
+        this.gridOffset = gridOffset;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +96,6 @@ public class GenerateWall : MonoBehaviour
                 {
                     Vector3Int pos = new Vector3Int((posX + x) * gridOffset, (posY + y) * gridOffset, 0);
                     wallTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
-                    wallPos.Add(pos);
                 }
             }
         }

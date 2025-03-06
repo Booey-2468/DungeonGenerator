@@ -324,6 +324,8 @@ GameObject:
   - component: {fileID: 882463755}
   - component: {fileID: 882463757}
   - component: {fileID: 882463758}
+  - component: {fileID: 882463760}
+  - component: {fileID: 882463759}
   m_Layer: 0
   m_Name: RoomSpawner
   m_TagString: Untagged
@@ -410,6 +412,40 @@ MonoBehaviour:
   bottomLeftCorner: {fileID: 168700486, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   bottomRightCorner: {fileID: 502968462, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   wallsTileMap: {fileID: 1768319058}
+  entryPos: []
+--- !u!114 &882463759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882463754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645d0e36a9a9c8544b31e439562a0e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topWall: {fileID: 0}
+  bottomWall: {fileID: 0}
+  leftWall: {fileID: 0}
+  rightWall: {fileID: 0}
+  topLeftCorner: {fileID: 0}
+  topRightCorner: {fileID: 0}
+  bottomLeftCorner: {fileID: 0}
+  bottomRightCorner: {fileID: 0}
+  wallsTileMap: {fileID: 0}
+--- !u!114 &882463760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882463754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad06c186646e3f40b9993f0250f7bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &947128788 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8487121422904788546, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
@@ -734,7 +770,7 @@ TilemapCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
@@ -802,9 +838,7 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 1
-  m_ColliderPaths:
-  - m_Collider: {fileID: 1768319059}
-    m_ColliderPaths: []
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.72

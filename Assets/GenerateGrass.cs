@@ -11,6 +11,13 @@ public class GenerateGrass : MonoBehaviour
     public GenerateWall walls;
     [SerializeField] private int gridOffset = 1;
     private List<Vector3Int> tilePos = new List<Vector3Int>();
+
+    public GenerateGrass(Tilemap backgroundTileMap, Sprite grass, GenerateWall walls)
+    {
+        this.backgroundTileMap = backgroundTileMap;
+        this.grass = grass;
+        this.walls = walls;
+    }
     // Start is called before the first frame update
     void Start()
     {
