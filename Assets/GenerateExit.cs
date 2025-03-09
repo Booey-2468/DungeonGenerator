@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
-
+public enum Direction
+{
+    left,
+    right,
+    up,
+    down
+}
 public class GenerateExit : MonoBehaviour
 {
     public GenerateWall walls;
@@ -15,10 +21,11 @@ public class GenerateExit : MonoBehaviour
     [SerializeField] private Sprite topRightCorner;
     [SerializeField] private Sprite bottomLeftCorner;
     [SerializeField] private Sprite bottomRightCorner;
-    [SerializeField] private Tilemap wallsTileMap;
+    [SerializeField] private Tilemap wallsTilemap;
     public List<Vector3Int> entryPos = new List<Vector3Int>();
+    public Direction exitDirection;
 
-    public GenerateExit(Tilemap wallsTileMap, Sprite topWall, Sprite bottomWall, Sprite leftWall, Sprite rightWall, Sprite topLeftCorner, Sprite topRightCorner, Sprite bottomLeftCorner, Sprite bottomRightCorner, GenerateWall room)
+    public GenerateExit(Tilemap wallsTilemap, Sprite topWall, Sprite bottomWall, Sprite leftWall, Sprite rightWall, Sprite topLeftCorner, Sprite topRightCorner, Sprite bottomLeftCorner, Sprite bottomRightCorner, GenerateWall room)
     {
         this.topWall = topWall;
         this.bottomWall = bottomWall;
@@ -27,7 +34,7 @@ public class GenerateExit : MonoBehaviour
         this.topLeftCorner = topLeftCorner;
         this.bottomLeftCorner = bottomLeftCorner;
         this.bottomRightCorner = bottomRightCorner;
-        this.wallsTileMap = wallsTileMap;
+        this.wallsTilemap = wallsTilemap;
     }
     // Start is called before the first frame update
     void Start()
@@ -44,71 +51,75 @@ public class GenerateExit : MonoBehaviour
 
 
         int wallDirection = UnityEngine.Random.Range(1, 5);
-        int wallAlign = 1;
+
         // 1 is left | 2 is up | 3 is right | 4 is down
         switch(wallDirection)
         {
             case 1:
                 wallX = walls.posX - 1;
-                pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
+                pos1 = new Vector3Int(wallX, wallY++, 0);
                 pos2 = new Vector3Int(wallX, wallY, 0);
-                pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
+                pos3 = new Vector3Int(wallX, wallY--, 0);
 
 
-                wallsTileMap.SetTile(pos1, new Tile() {sprite = bottomRightCorner});
-                wallsTileMap.SetTile(pos2, null);
-                wallsTileMap.SetTile(pos3, new Tile() {sprite = topRightCorner});
+                wallsTilemap.SetTile(pos1, new Tile() {sprite = bottomRightCorner});
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() {sprite = topRightCorner});
 
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
+                exitDirection = Direction.left;
                 break;
             case 2:
                 wallY = walls.posY + walls.sizeY;
 
-                pos1 = new Vector3Int(wallX - wallAlign, wallY, 0);
+                pos1 = new Vector3Int(wallX--, wallY, 0);
                 pos2 = new Vector3Int(wallX, wallY, 0);
-                pos3 = new Vector3Int(wallX + wallAlign, wallY, 0);
+                pos3 = new Vector3Int(wallX++, wallY, 0);
 
-                wallsTileMap.SetTile(pos1, new Tile() { sprite = bottomRightCorner });
-                wallsTileMap.SetTile(pos2, null);
-                wallsTileMap.SetTile(pos3, new Tile() {sprite = bottomLeftCorner });
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomRightCorner });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() {sprite = bottomLeftCorner });
 
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
+                exitDirection = Direction.left;
                 break;
             case 3:
                 wallX = walls.posX + walls.sizeX;
 
-                pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
+                pos1 = new Vector3Int(wallX, wallY++, 0);
                 pos2 = new Vector3Int(wallX, wallY, 0);
-                pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
+                pos3 = new Vector3Int(wallX, wallY--, 0);
 
-                wallsTileMap.SetTile(pos1, new Tile() { sprite = bottomLeftCorner });
-                wallsTileMap.SetTile(pos2, null);
-                wallsTileMap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomLeftCorner });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
 
 
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
+                exitDirection = Direction.right;
                 break;
             case 4:
                 wallY = walls.posY - 1;
 
 
-                pos1 = new Vector3Int(wallX - wallAlign, wallY, 0);
+                pos1 = new Vector3Int(wallX--, wallY, 0);
                 pos2 = new Vector3Int(wallX, wallY, 0);
-                pos3 = new Vector3Int(wallX + wallAlign, wallY, 0);
+                pos3 = new Vector3Int(wallX++, wallY, 0);
 
-                wallsTileMap.SetTile(pos1, new Tile() { sprite = topRightCorner });
-                wallsTileMap.SetTile(pos2, null);
-                wallsTileMap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = topRightCorner });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
 
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
+                exitDirection = Direction.down;
                 break;
         }
 
