@@ -5,44 +5,32 @@ using UnityEngine.Tilemaps;
 
 public class GenerateWall : MonoBehaviour
 {
-    [SerializeField] private Tilemap wallTilemap;
-    [SerializeField] private Sprite topWall;
-    [SerializeField] private Sprite bottomWall;
-    [SerializeField] private Sprite leftWall;
-    [SerializeField] private Sprite rightWall;
-    [SerializeField] private Sprite topLeftCorner;
-    [SerializeField] private Sprite topRightCorner;
-    [SerializeField] private Sprite bottomLeftCorner;
-    [SerializeField] private Sprite bottomRightCorner;
-    [SerializeField] public int sizeX;
-    [SerializeField] public int sizeY;
-    [SerializeField] public int posX;
-    [SerializeField] public int posY;
-    [SerializeField] private int gridOffset = 1;
+    public Tilemap wallsTilemap;
+    public Sprite topWall;
+    public Sprite bottomWall;
+    public Sprite leftWall;
+    public Sprite rightWall;
+    public Sprite topLeftCorner;
+    public Sprite topRightCorner;
+    public Sprite bottomLeftCorner;
+    public Sprite bottomRightCorner;
+    public int sizeX;
+    public int sizeY;
+    public int posX;
+    public int posY;
+    public int gridOffset = 1;
     private Sprite currentSelection;
-    
-    public GenerateWall(Tilemap wallTilemap, Sprite topWall, Sprite bottomWall, Sprite leftWall, Sprite rightWall, Sprite topLeftCorner, Sprite topRightCorner, Sprite bottomLeftCorner, Sprite bottomRightCorner, int sizeX, int sizeY, int posX, int posY, int gridOffset)
-    {
-        this.wallTilemap = wallTilemap;
-        this.topWall = topWall;
-        this.bottomWall = bottomWall;
-        this.leftWall = leftWall;
-        this.rightWall = rightWall;
-        this.topLeftCorner = topLeftCorner;
-        this.topRightCorner = topRightCorner;
-        this.bottomLeftCorner = bottomLeftCorner;
-        this.bottomRightCorner = bottomRightCorner;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.posX = posX;
-        this.posY = posY;
-        this.gridOffset = gridOffset;
-    }
+    public GameObject grassPrefab;
+
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        GenerateGrass createGrass = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
+
+
         for (int x = -1; x <= sizeX; x++)
         {
             for (int y = -1; y <= sizeY; y++)
@@ -95,7 +83,7 @@ public class GenerateWall : MonoBehaviour
                 if (currentSelection != null)
                 {
                     Vector3Int pos = new Vector3Int((posX + x) * gridOffset, (posY + y) * gridOffset, 0);
-                    wallTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
+                    wallsTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
                 }
             }
         }

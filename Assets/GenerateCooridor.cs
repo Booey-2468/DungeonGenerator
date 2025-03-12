@@ -5,14 +5,17 @@ using UnityEngine.Tilemaps;
 
 public class GenerateCooridor : MonoBehaviour
 {
-    GenerateExit start;
-    Tilemap wallsTilemap;
+    public GenerateExit start;
+    public Sprite topWall;
+    public Sprite bottomWall;
+    public Sprite leftWall;
+    public Sprite rightWall;
+    public Sprite topLeftCorner;
+    public Sprite topRightCorner;
+    public Sprite bottomLeftCorner;
+    public Sprite bottomRightCorner;
+    public Tilemap wallsTilemap;
     public List<Vector3Int> cooridorPos = new List<Vector3Int>();
-    GenerateCooridor(GenerateExit start, Tilemap wallsTilemap)
-    {
-        this.start = start;
-        this.wallsTilemap = wallsTilemap;
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +32,9 @@ public class GenerateCooridor : MonoBehaviour
                 pos2 = new Vector3Int(initialPos[0]++, initialPos[1], 0);
                 pos3 = new Vector3Int(initialPos[0]++, initialPos[1]--, 0);
 
-                wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomRightCorner });
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomWall });
                 wallsTilemap.SetTile(pos2, null);
-                wallsTilemap.SetTile(pos3, new Tile() { sprite = bottomLeftCorner });
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = topWall });
 
                 cooridorPos.Add(pos1);
                 cooridorPos.Add(pos2);
@@ -41,16 +44,40 @@ public class GenerateCooridor : MonoBehaviour
                 pos1 = new Vector3Int(initialPos[0]--, initialPos[1]++, 0);
                 pos2 = new Vector3Int(initialPos[0], initialPos[1]++, 0);
                 pos3 = new Vector3Int(initialPos[0]++, initialPos[1]++, 0);
+
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = rightWall });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = leftWall });
+
+                cooridorPos.Add(pos1);
+                cooridorPos.Add(pos2);
+                cooridorPos.Add(pos3);
                 break;
             case Direction.right:
                 pos1 = new Vector3Int(initialPos[0]--, initialPos[1]++, 0);
                 pos2 = new Vector3Int(initialPos[0]--, initialPos[1], 0);
                 pos3 = new Vector3Int(initialPos[0]--, initialPos[1]--, 0);
+
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomWall });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = topWall });
+
+                cooridorPos.Add(pos1);
+                cooridorPos.Add(pos2);
+                cooridorPos.Add(pos3);
                 break;
             case Direction.down:
                 pos1 = new Vector3Int(initialPos[0]--, initialPos[1]--, 0);
                 pos2 = new Vector3Int(initialPos[0], initialPos[1]--, 0);
                 pos3 = new Vector3Int(initialPos[0]++, initialPos[1]--, 0);
+
+                wallsTilemap.SetTile(pos1, new Tile() { sprite = rightWall });
+                wallsTilemap.SetTile(pos2, null);
+                wallsTilemap.SetTile(pos3, new Tile() { sprite = leftWall });
+
+                cooridorPos.Add(pos1);
+                cooridorPos.Add(pos2);
+                cooridorPos.Add(pos3);
                 break;
         }
     }

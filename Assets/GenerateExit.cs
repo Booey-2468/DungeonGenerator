@@ -13,29 +13,18 @@ public enum Direction
 public class GenerateExit : MonoBehaviour
 {
     public GenerateWall walls;
-    [SerializeField] private Sprite topWall;
-    [SerializeField] private Sprite bottomWall;
-    [SerializeField] private Sprite leftWall;
-    [SerializeField] private Sprite rightWall;
-    [SerializeField] private Sprite topLeftCorner;
-    [SerializeField] private Sprite topRightCorner;
-    [SerializeField] private Sprite bottomLeftCorner;
-    [SerializeField] private Sprite bottomRightCorner;
-    [SerializeField] private Tilemap wallsTilemap;
+    public Sprite topWall;
+    public Sprite bottomWall;
+    public Sprite leftWall;
+    public Sprite rightWall;
+    public Sprite topLeftCorner;
+    public Sprite topRightCorner;
+    public Sprite bottomLeftCorner;
+    public Sprite bottomRightCorner;
+    public Tilemap wallsTilemap;
     public List<Vector3Int> entryPos = new List<Vector3Int>();
     public Direction exitDirection;
 
-    public GenerateExit(Tilemap wallsTilemap, Sprite topWall, Sprite bottomWall, Sprite leftWall, Sprite rightWall, Sprite topLeftCorner, Sprite topRightCorner, Sprite bottomLeftCorner, Sprite bottomRightCorner, GenerateWall room)
-    {
-        this.topWall = topWall;
-        this.bottomWall = bottomWall;
-        this.leftWall = leftWall;
-        this.rightWall = rightWall;
-        this.topLeftCorner = topLeftCorner;
-        this.bottomLeftCorner = bottomLeftCorner;
-        this.bottomRightCorner = bottomRightCorner;
-        this.wallsTilemap = wallsTilemap;
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -85,7 +74,8 @@ public class GenerateExit : MonoBehaviour
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
-                exitDirection = Direction.left;
+
+                exitDirection = Direction.up;
                 break;
             case 3:
                 wallX = walls.posX + walls.sizeX;
@@ -102,6 +92,7 @@ public class GenerateExit : MonoBehaviour
                 entryPos.Add(pos1);
                 entryPos.Add(pos2);
                 entryPos.Add(pos3);
+
                 exitDirection = Direction.right;
                 break;
             case 4:
