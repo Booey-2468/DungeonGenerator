@@ -365,6 +365,7 @@ MonoBehaviour:
   bottomLeftCorner: {fileID: 168700486, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   bottomRightCorner: {fileID: 502968462, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   wallsTileMap: {fileID: 1768319058}
+  grassTileMap: {fileID: 1894392325}
   roomPrefab: {fileID: 5719961116749379582, guid: 26ba5d433f33fc9429ea9a82c5d2f0e3, type: 3}
   exitPrefab: {fileID: 3093411726336939867, guid: 45785e162691034488a507fc9f900770, type: 3}
   cooridorPrefab: {fileID: 1087998667267810347, guid: 1e6279571a1f6b349b8cdc56c829b19f, type: 3}

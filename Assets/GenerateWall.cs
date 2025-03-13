@@ -21,6 +21,8 @@ public class GenerateWall : MonoBehaviour
     public int gridOffset = 1;
     private Sprite currentSelection;
     public GameObject grassPrefab;
+    public Tilemap grassTilemap;
+    public bool valuesAssigned = false;
 
 
 
@@ -28,70 +30,75 @@ public class GenerateWall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateGrass createGrass = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
 
-
-        for (int x = -1; x <= sizeX; x++)
-        {
-            for (int y = -1; y <= sizeY; y++)
-            {
-                if (x == -1)    // checks if its the first column of room
-                {
-                    if (y == -1)
-                    {
-                        currentSelection = bottomLeftCorner;
-                    }
-                    else if (y == sizeY)
-                    {
-                        currentSelection = topLeftCorner;
-                    }
-                    else
-                    {
-                        currentSelection = leftWall;
-                    }
-                }
-                else if (x == sizeX)// checks if its the last column of room 
-                {
-                    if (y == -1)
-                    {
-                        currentSelection = bottomRightCorner;
-                    }
-                    else if (y == sizeY)
-                    {
-                        currentSelection = topRightCorner;
-                    }
-                    else
-                    {
-                        currentSelection = rightWall;
-                    }
-                }
-                else          // Runs if its not the left or right wall/side
-                {
-                    if (y == -1)
-                    {
-                        currentSelection = bottomWall;
-                    }
-                    else if (y == sizeY)
-                    {
-                        currentSelection = topWall;
-                    }
-                    else
-                    {
-                        currentSelection = null;
-                    }
-                }
-                if (currentSelection != null)
-                {
-                    Vector3Int pos = new Vector3Int((posX + x) * gridOffset, (posY + y) * gridOffset, 0);
-                    wallsTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
-                }
-            }
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (valuesAssigned)
+        {
+            GenerateGrass createGrass = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
+            createGrass.backgroundTileMap = grassTilemap;
+            createGrass.walls = this; createGrass.valuesAssigned = true;
+
+            for (int x = -1; x <= sizeX; x++)
+            {
+                for (int y = -1; y <= sizeY; y++)
+                {
+                    if (x == -1)    // checks if its the first column of room
+                    {
+                        if (y == -1)
+                        {
+                            currentSelection = bottomLeftCorner;
+                        }
+                        else if (y == sizeY)
+                        {
+                            currentSelection = topLeftCorner;
+                        }
+                        else
+                        {
+                            currentSelection = leftWall;
+                        }
+                    }
+                    else if (x == sizeX)// checks if its the last column of room 
+                    {
+                        if (y == -1)
+                        {
+                            currentSelection = bottomRightCorner;
+                        }
+                        else if (y == sizeY)
+                        {
+                            currentSelection = topRightCorner;
+                        }
+                        else
+                        {
+                            currentSelection = rightWall;
+                        }
+                    }
+                    else          // Runs if its not the left or right wall/side
+                    {
+                        if (y == -1)
+                        {
+                            currentSelection = bottomWall;
+                        }
+                        else if (y == sizeY)
+                        {
+                            currentSelection = topWall;
+                        }
+                        else
+                        {
+                            currentSelection = null;
+                        }
+                    }
+                    if (currentSelection != null)
+                    {
+                        Vector3Int pos = new Vector3Int((posX + x) * gridOffset, (posY + y) * gridOffset, 0);
+                        wallsTilemap.SetTile(pos, new Tile() { sprite = currentSelection });
+                    }
+                }
+            }
+            valuesAssigned = false;
+        }
     }
 }

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e84e02b1c9c5aa4fbc60d2bd5c640c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallTilemap: {fileID: 0}
+  wallsTilemap: {fileID: 0}
   topWall: {fileID: 0}
   bottomWall: {fileID: 0}
   leftWall: {fileID: 0}
@@ -58,3 +58,6 @@ MonoBehaviour:
   posX: 0
   posY: 0
   gridOffset: 0
+  grassPrefab: {fileID: 5331738784993514536, guid: ad82a1f690213a241a0c82ec308f1d58, type: 3}
+  grassTilemap: {fileID: 0}
+  valuesAssigned: 0
