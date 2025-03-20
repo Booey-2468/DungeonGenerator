@@ -44,58 +44,40 @@ public class GenerateExit : MonoBehaviour
 
 
             int wallDirection = UnityEngine.Random.Range(1, 5);
+            int wallAlign = 1;
 
             // 1 is left | 2 is up | 3 is right | 4 is down
             switch (wallDirection)
             {
                 case 1:
                     wallX = walls.posX - 1;
-                    pos1 = new Vector3Int(wallX, wallY++, 0);
+                    pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
                     pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX, wallY--, 0);
+                    pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
 
-
-                    wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomRightCorner });
-                    wallsTilemap.SetTile(pos2, null);
-                    wallsTilemap.SetTile(pos3, new Tile() { sprite = topRightCorner });
-
-                    entryPos.Add(pos1);
-                    entryPos.Add(pos2);
-                    entryPos.Add(pos3);
+                    SetExit(pos1, pos2, pos3, bottomRightCorner,topRightCorner);
+                   
                     exitDirection = Direction.left;
                     break;
                 case 2:
                     wallY = walls.posY + walls.sizeY;
 
-                    pos1 = new Vector3Int(wallX--, wallY, 0);
+                    pos1 = new Vector3Int(wallX - wallAlign, wallY, 0);
                     pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX++, wallY, 0);
+                    pos3 = new Vector3Int(wallX + wallAlign, wallY, 0);
 
-                    wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomRightCorner });
-                    wallsTilemap.SetTile(pos2, null);
-                    wallsTilemap.SetTile(pos3, new Tile() { sprite = bottomLeftCorner });
-
-                    entryPos.Add(pos1);
-                    entryPos.Add(pos2);
-                    entryPos.Add(pos3);
+                    SetExit(pos1, pos2, pos3, bottomRightCorner, bottomLeftCorner);
 
                     exitDirection = Direction.up;
                     break;
                 case 3:
                     wallX = walls.posX + walls.sizeX;
 
-                    pos1 = new Vector3Int(wallX, wallY++, 0);
+                    pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
                     pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX, wallY--, 0);
+                    pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
 
-                    wallsTilemap.SetTile(pos1, new Tile() { sprite = bottomLeftCorner });
-                    wallsTilemap.SetTile(pos2, null);
-                    wallsTilemap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
-
-
-                    entryPos.Add(pos1);
-                    entryPos.Add(pos2);
-                    entryPos.Add(pos3);
+                    SetExit(pos1, pos2, pos3, bottomLeftCorner, topLeftCorner);
 
                     exitDirection = Direction.right;
                     break;
@@ -103,21 +85,27 @@ public class GenerateExit : MonoBehaviour
                     wallY = walls.posY - 1;
 
 
-                    pos1 = new Vector3Int(wallX--, wallY, 0);
+                    pos1 = new Vector3Int(wallX-1, wallY, 0);
                     pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX++, wallY, 0);
+                    pos3 = new Vector3Int(wallX+1, wallY, 0);
 
-                    wallsTilemap.SetTile(pos1, new Tile() { sprite = topRightCorner });
-                    wallsTilemap.SetTile(pos2, null);
-                    wallsTilemap.SetTile(pos3, new Tile() { sprite = topLeftCorner });
+                    SetExit(pos1, pos2, pos3, topRightCorner, topLeftCorner);
 
-                    entryPos.Add(pos1);
-                    entryPos.Add(pos2);
-                    entryPos.Add(pos3);
                     exitDirection = Direction.down;
                     break;
             }
             valuesAssigned = false;
         }
+    }
+    private void SetExit(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Sprite sprite1, Sprite sprite2)
+    {
+
+        wallsTilemap.SetTile(pos1, new Tile() { sprite = sprite1 });
+        wallsTilemap.SetTile(pos2, null);
+        wallsTilemap.SetTile(pos3, new Tile() { sprite = sprite2 });
+
+        entryPos.Add(pos1);
+        entryPos.Add(pos2);
+        entryPos.Add(pos3);
     }
 }

@@ -21,14 +21,22 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject exitPrefab;
     [SerializeField] private GameObject cooridorPrefab;
     GameObject roomSpawner;
+    private List<Vector3Int> cardinalDirections = new List<Vector3Int> 
+    { 
+        new Vector3Int(-1, 0 ,0),
+        new Vector3Int(1, 0 ,0),
+        new Vector3Int(0, 1 ,0),
+        new Vector3Int (0, -1 ,0),
+    };
     // Start is called before the first frame update
 
     int posX = -5, posY = -5, sizeX = 10, sizeY = 10;
-    void Start()
+    void Awake()
     {
         List<Sprite> spriteList = new List<Sprite>() { topWall, bottomWall, leftWall, rightWall, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner};
         GenerateWall initialRoom = Instantiate(roomPrefab, new Vector3Int(0,0,0), Quaternion.identity).GetComponent<GenerateWall>();
         GenerateExit initialExit = Instantiate(exitPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateExit>();
+        GenerateCooridor initialCooridor = Instantiate(cooridorPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent< GenerateCooridor>();
 
 
         initialRoom.topWall = topWall; initialRoom.bottomWall = bottomWall; initialRoom.leftWall = leftWall; initialRoom.rightWall = rightWall;
@@ -40,6 +48,10 @@ public class RoomManager : MonoBehaviour
         initialExit.topLeftCorner = topLeftCorner; initialExit.topRightCorner = topRightCorner; initialExit.bottomLeftCorner = bottomLeftCorner;
         initialExit.bottomRightCorner = bottomRightCorner; initialExit.walls = initialRoom; initialExit.wallsTilemap = wallsTileMap; initialExit.valuesAssigned = true;
 
+        initialCooridor.topWall = topWall; initialCooridor.bottomWall = bottomWall; initialCooridor.leftWall = leftWall; initialCooridor.rightWall = rightWall;
+        initialCooridor.topLeftCorner = topLeftCorner; initialCooridor.topRightCorner = topRightCorner; initialCooridor.bottomLeftCorner = bottomLeftCorner;
+        initialCooridor.bottomRightCorner = bottomRightCorner; initialCooridor.wallsTilemap = wallsTileMap; initialCooridor.cardinalDirections = cardinalDirections;
+        initialCooridor.start = initialExit; initialCooridor.valuesAssigned = true;
 
     }
 
