@@ -21,6 +21,7 @@ public class GenerateExit : MonoBehaviour
     public List<Vector3Int> entryPos = new List<Vector3Int>();
     public Direction exitDirection;
     public bool valuesAssigned = false;
+    public bool customExit = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +37,16 @@ public class GenerateExit : MonoBehaviour
             Vector3Int pos1 = new Vector3Int();
             Vector3Int pos2 = new Vector3Int();
             Vector3Int pos3 = new Vector3Int();
+            int wallX = 0;
+            int wallY = 0;
 
+            int numOfExits = UnityEngine.Random.Range(1, 6);
 
-            int wallX = UnityEngine.Random.Range((int)walls.posX + 1, (int)(walls.posX + walls.sizeX - 1));
-            int wallY = UnityEngine.Random.Range((int)walls.posY + 1, (int)(walls.posY + walls.sizeY - 1));
-
-
+            if (!customExit)
+            {
+                wallX = UnityEngine.Random.Range((int)walls.posX + 1, (int)(walls.posX + walls.sizeX - 1));
+                wallY = UnityEngine.Random.Range((int)walls.posY + 1, (int)(walls.posY + walls.sizeY - 1));
+            }
 
             int wallDirection = UnityEngine.Random.Range(1, 5);
             int wallAlign = 1;

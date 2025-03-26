@@ -21,6 +21,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private GameObject exitPrefab;
     [SerializeField] private GameObject cooridorPrefab;
     GameObject roomSpawner;
+    private List<List<Vector3Int>> tileLocations;
     private List<Vector3Int> cardinalDirections = new List<Vector3Int> 
     { 
         new Vector3Int(-1, 0 ,0),
@@ -45,8 +46,7 @@ public class RoomManager : MonoBehaviour
         initialRoom.posY = posY; initialRoom.sizeX = sizeX; initialRoom.sizeY = sizeY;
         initialRoom.grassTilemap = grassTileMap; initialRoom.gridOffset = 1; initialRoom.valuesAssigned = true;
 
-        initialExit.topLeftCorner = topLeftCorner; initialExit.topRightCorner = topRightCorner; initialExit.bottomLeftCorner = bottomLeftCorner;
-        initialExit.bottomRightCorner = bottomRightCorner; initialExit.walls = initialRoom; initialExit.wallsTilemap = wallsTileMap; initialExit.valuesAssigned = true;
+
 
         initialCooridor.topWall = topWall; initialCooridor.bottomWall = bottomWall; initialCooridor.leftWall = leftWall; initialCooridor.rightWall = rightWall;
         initialCooridor.topLeftCorner = topLeftCorner; initialCooridor.topRightCorner = topRightCorner; initialCooridor.bottomLeftCorner = bottomLeftCorner;
@@ -59,5 +59,13 @@ public class RoomManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void CreateAllExits(GenerateWall currentRoom)
+    {
+        GenerateExit currentExit = Instantiate(exitPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateExit>();
+
+        currentExit.topLeftCorner = topLeftCorner; currentExit.topRightCorner = topRightCorner; currentExit.bottomLeftCorner = bottomLeftCorner;
+        currentExit.bottomRightCorner = bottomRightCorner; currentExit.walls = currentRoom; currentExit.wallsTilemap = wallsTileMap; currentExit.valuesAssigned = true;
     }
 }
