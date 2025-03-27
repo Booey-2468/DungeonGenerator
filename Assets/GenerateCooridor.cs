@@ -20,7 +20,7 @@ public class GenerateCooridor : MonoBehaviour
     private Vector3Int pos2;
     private Vector3Int pos3;
     public Vector3Int currentPos;
-    private Direction currentDirection;
+    public Direction currentDirection;
     private int moveNum = 1;
     private bool isCorner = false;
     private int cooridorCount = 0;
@@ -28,7 +28,9 @@ public class GenerateCooridor : MonoBehaviour
     public List<Vector3Int> cardinalDirections;
     public bool valuesAssigned = false;
     public bool cooridorBlocked = false;
-    public int current;
+    private bool startRepeat = false;
+    public bool generateRoom = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -40,14 +42,14 @@ public class GenerateCooridor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (valuesAssigned && !cooridorBlocked)
+        if (valuesAssigned)
         {
-            currentPos = start.entryPos[1][1];
+            currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
             valuesAssigned = false;
+            startRepeat = true;
         }
-
-        if(!valuesAssigned && !cooridorBlocked)
+        if (startRepeat && !generateRoom && !cooridorBlocked)
         {
             int turnChance = UnityEngine.Random.Range(1, 100);
             int leftOrRight = UnityEngine.Random.Range(0, 2);
@@ -57,7 +59,7 @@ public class GenerateCooridor : MonoBehaviour
             Sprite terminatingSprite = null;
             List<Sprite> turningSpriteList = new List<Sprite>() {null, null, null};
 
-            bool generateRoom = (turnChance < 10 && cooridorCount > 1);
+            generateRoom = (turnChance < 10 && cooridorCount > 1);
             isCorner = (turnChance > 75 && cooridorCount > 3);  // 25% chance to turn and must have at least 3 more cooridors till the next turn
 
             switch (currentDirection)
@@ -213,6 +215,7 @@ public class GenerateCooridor : MonoBehaviour
             wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });
             wallsTilemap.SetTile(pos3, null);
             cooridorBlocked = true;
+            Debug.Log("Monkey");
         }
     }
 
@@ -251,7 +254,13 @@ public class GenerateCooridor : MonoBehaviour
                 break;
         }
         wallsTilemap.SetTile(pos2, null);
-        if (turnLeft)
+        bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null);
+        if (!nothingInFront)
+        {
+            cooridorBlocked = true;
+            return new List<Vector3Int>() { pos1, pos2, pos3 };
+        }
+        else if (turnLeft)
         {
             wallsTilemap.SetTile(pos2 + localRight, new Tile() { sprite = sideSprite });
             wallsTilemap.SetTile(pos2 + localLeft, null);

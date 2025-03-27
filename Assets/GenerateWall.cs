@@ -22,6 +22,7 @@ public class GenerateWall : MonoBehaviour
     private Sprite currentSelection;
     public GameObject grassPrefab;
     public Tilemap grassTilemap;
+    public List<Vector3Int> wallList;
     public bool valuesAssigned = false;
 
 

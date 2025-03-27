@@ -19,9 +19,12 @@ public class GenerateExit : MonoBehaviour
     public Sprite bottomRightCorner;
     public Tilemap wallsTilemap;
     public List<Vector3Int> entryPos = new List<Vector3Int>();
+    public List<List<Vector3Int>> checkPos = new List<List<Vector3Int>>();
     public Direction exitDirection;
     public bool valuesAssigned = false;
     public bool customExit = false;
+    public int wallX = 0, wallY = 0;    
+    public bool isOpening = false;
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +40,7 @@ public class GenerateExit : MonoBehaviour
             Vector3Int pos1 = new Vector3Int();
             Vector3Int pos2 = new Vector3Int();
             Vector3Int pos3 = new Vector3Int();
-            int wallX = 0;
-            int wallY = 0;
 
-            int numOfExits = UnityEngine.Random.Range(1, 6);
 
             if (!customExit)
             {
@@ -104,13 +104,26 @@ public class GenerateExit : MonoBehaviour
     }
     private void SetExit(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Sprite sprite1, Sprite sprite2)
     {
+        bool intersectingExit = false;
+        for (int i = 0; i < checkPos.Count; i++)
+        {
+            for (int j = 0; j < checkPos[i].Count; j++)
+            {
+                if (checkPos[i][j] == entryPos[j])
+                {
+                    intersectingExit = true;
+                }
+            }
+        }
+        if (!intersectingExit)
+        {
+            wallsTilemap.SetTile(pos1, new Tile() { sprite = sprite1 });
+            wallsTilemap.SetTile(pos2, null);
+            wallsTilemap.SetTile(pos3, new Tile() { sprite = sprite2 });
 
-        wallsTilemap.SetTile(pos1, new Tile() { sprite = sprite1 });
-        wallsTilemap.SetTile(pos2, null);
-        wallsTilemap.SetTile(pos3, new Tile() { sprite = sprite2 });
-
-        entryPos.Add(pos1);
-        entryPos.Add(pos2);
-        entryPos.Add(pos3);
+            entryPos.Add(pos1);
+            entryPos.Add(pos2);
+            entryPos.Add(pos3);
+        }
     }
 }
