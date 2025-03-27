@@ -122,7 +122,7 @@ public class RoomManager : MonoBehaviour
                     posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[0];
                     posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[1];
 
-                    CreateAllExits(createdRoom, 1, true, true, posX, posY);
+                    CreateAllExits(createdRoom, 1, true, true, posX, posY, (int)cooridorList[i].currentDirection + 1);
                     cooridorList.Remove(cooridorList[i]);
 
                 }
@@ -165,6 +165,8 @@ public class RoomManager : MonoBehaviour
             exitList.Add(currentExit);
             tileLocations.Add(currentExit.entryPos);
             exitLocations.Add(currentExit.entryPos);
+            Destroy(currentExit.transform.gameObject);
+
         }
     }
     void StartCooridor(GenerateExit currentExit)
