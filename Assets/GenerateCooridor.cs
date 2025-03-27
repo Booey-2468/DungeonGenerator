@@ -26,27 +26,25 @@ public class GenerateCooridor : MonoBehaviour
     private int cooridorCount = 0;
     public List<List<Vector3Int>> cooridorPos = new List<List<Vector3Int>>();
     public List<Vector3Int> cardinalDirections;
-    public bool valuesAssigned = false;
     public bool cooridorBlocked = false;
     private bool startRepeat = false;
     public bool generateRoom = false;
     
 
     // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-
+        CreateCooridor();
 
     }
 
     // Update is called once per frame
-    void Update()
+    void CreateCooridor()
     {
-        if (valuesAssigned)
+        if (!startRepeat)
         {
             currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
-            valuesAssigned = false;
             startRepeat = true;
         }
         if (startRepeat && !generateRoom && !cooridorBlocked)
@@ -60,7 +58,7 @@ public class GenerateCooridor : MonoBehaviour
             List<Sprite> turningSpriteList = new List<Sprite>() {null, null, null};
 
             generateRoom = (turnChance < 10 && cooridorCount > 1);
-            isCorner = (turnChance > 75 && cooridorCount > 3);  // 25% chance to turn and must have at least 3 more cooridors till the next turn
+            isCorner = (turnChance > 80 && cooridorCount > 3);  // 25% chance to turn and must have at least 3 more cooridors till the next turn
 
             switch (currentDirection)
             {
@@ -215,7 +213,6 @@ public class GenerateCooridor : MonoBehaviour
             wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });
             wallsTilemap.SetTile(pos3, null);
             cooridorBlocked = true;
-            Debug.Log("Monkey");
         }
     }
 

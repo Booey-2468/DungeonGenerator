@@ -21,85 +21,76 @@ public class GenerateExit : MonoBehaviour
     public List<Vector3Int> entryPos = new List<Vector3Int>();
     public List<List<Vector3Int>> checkPos = new List<List<Vector3Int>>();
     public Direction exitDirection;
-    public bool valuesAssigned = false;
     public bool customExit = false;
     public int wallX = 0, wallY = 0;    
     public bool isOpening = false;
+    public int wallDirection;
 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
-    void Update()
+    public void CreateExit()
     {
-        if (valuesAssigned)
+
+        Vector3Int pos1 = new Vector3Int();
+        Vector3Int pos2 = new Vector3Int();
+        Vector3Int pos3 = new Vector3Int();
+
+        if (!customExit)
         {
-            Vector3Int pos1 = new Vector3Int();
-            Vector3Int pos2 = new Vector3Int();
-            Vector3Int pos3 = new Vector3Int();
+            wallX = UnityEngine.Random.Range((int)walls.posX + 1, (int)(walls.posX + walls.sizeX - 1));
+            wallY = UnityEngine.Random.Range((int)walls.posY + 1, (int)(walls.posY + walls.sizeY - 1));
+            wallDirection = UnityEngine.Random.Range(1, 5);
+        }
 
+        int wallAlign = 1;
 
-            if (!customExit)
-            {
-                wallX = UnityEngine.Random.Range((int)walls.posX + 1, (int)(walls.posX + walls.sizeX - 1));
-                wallY = UnityEngine.Random.Range((int)walls.posY + 1, (int)(walls.posY + walls.sizeY - 1));
-            }
+        // 1 is left | 2 is up | 3 is right | 4 is down
+        switch (wallDirection)
+        {
+            case 1:
+                wallX = walls.posX - 1;
+                pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
+                pos2 = new Vector3Int(wallX, wallY, 0);
+                pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
 
-            int wallDirection = UnityEngine.Random.Range(1, 5);
-            int wallAlign = 1;
-
-            // 1 is left | 2 is up | 3 is right | 4 is down
-            switch (wallDirection)
-            {
-                case 1:
-                    wallX = walls.posX - 1;
-                    pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
-                    pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
-
-                    SetExit(pos1, pos2, pos3, bottomRightCorner,topRightCorner);
+                SetExit(pos1, pos2, pos3, bottomRightCorner,topRightCorner);
                    
-                    exitDirection = Direction.left;
-                    break;
-                case 2:
-                    wallY = walls.posY + walls.sizeY;
+                exitDirection = Direction.left;
+                break;
+            case 2:
+                wallY = walls.posY + walls.sizeY;
 
-                    pos1 = new Vector3Int(wallX - wallAlign, wallY, 0);
-                    pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX + wallAlign, wallY, 0);
+                pos1 = new Vector3Int(wallX - wallAlign, wallY, 0);
+                pos2 = new Vector3Int(wallX, wallY, 0);
+                pos3 = new Vector3Int(wallX + wallAlign, wallY, 0);
 
-                    SetExit(pos1, pos2, pos3, bottomRightCorner, bottomLeftCorner);
+                SetExit(pos1, pos2, pos3, bottomRightCorner, bottomLeftCorner);
 
-                    exitDirection = Direction.up;
-                    break;
-                case 3:
-                    wallX = walls.posX + walls.sizeX;
+                exitDirection = Direction.up;
+                break;
+            case 3:
+                wallX = walls.posX + walls.sizeX;
 
-                    pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
-                    pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
+                pos1 = new Vector3Int(wallX, wallY + wallAlign, 0);
+                pos2 = new Vector3Int(wallX, wallY, 0);
+                pos3 = new Vector3Int(wallX, wallY - wallAlign, 0);
 
-                    SetExit(pos1, pos2, pos3, bottomLeftCorner, topLeftCorner);
+                SetExit(pos1, pos2, pos3, bottomLeftCorner, topLeftCorner);
 
-                    exitDirection = Direction.right;
-                    break;
-                case 4:
-                    wallY = walls.posY - 1;
+                exitDirection = Direction.right;
+                break;
+            case 4:
+                wallY = walls.posY - 1;
 
+                pos1 = new Vector3Int(wallX-1, wallY, 0);
+                pos2 = new Vector3Int(wallX, wallY, 0);
+                pos3 = new Vector3Int(wallX+1, wallY, 0);
 
-                    pos1 = new Vector3Int(wallX-1, wallY, 0);
-                    pos2 = new Vector3Int(wallX, wallY, 0);
-                    pos3 = new Vector3Int(wallX+1, wallY, 0);
+                SetExit(pos1, pos2, pos3, topRightCorner, topLeftCorner);
 
-                    SetExit(pos1, pos2, pos3, topRightCorner, topLeftCorner);
-
-                    exitDirection = Direction.down;
-                    break;
-            }
-            valuesAssigned = false;
+                exitDirection = Direction.down;
+                break;
         }
     }
     private void SetExit(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Sprite sprite1, Sprite sprite2)
@@ -109,9 +100,10 @@ public class GenerateExit : MonoBehaviour
         {
             for (int j = 0; j < checkPos[i].Count; j++)
             {
-                if (checkPos[i][j] == entryPos[j])
+                if (checkPos[i][j].Equals(entryPos[j]))
                 {
                     intersectingExit = true;
+                    break;
                 }
             }
         }
