@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.U2D.Animation;
 using UnityEngine;
@@ -43,10 +44,7 @@ public class RoomManager : MonoBehaviour
     {
         List<Sprite> spriteList = new List<Sprite>() { topWall, bottomWall, leftWall, rightWall, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner};
         InstantiateRoom(posX, posY, sizeX, sizeY);
-
-
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -80,94 +78,100 @@ public class RoomManager : MonoBehaviour
     }
     void CreateRoomFromCooridor()
     {
-
-        for (int i = 0; i < cooridorList.Count; i++)
+        if (cooridorList.LastOrDefault() != null)
         {
-            if (cooridorList[i].cooridorBlocked)
+            for (int i = 0; i < cooridorList.IndexOf(cooridorList.LastOrDefault()); i++)
             {
-                cooridorList.Remove(cooridorList[i]);
-                
-            }
-            else if (cooridorList[i].generateRoom)
-            {
-                posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[0];
-                posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[1];
-                sizeX = 10;
-                sizeY = 10;
-                Vector3Int roomSpawnPos = PlaceRoomPos(cooridorList[i].currentDirection, posX, posY, sizeX, sizeY);
-                posX = roomSpawnPos.x;
-                posY = roomSpawnPos.y;
-
-                for (int item = 0; item < tileLocations.Count; item++) // Check if any tiles in area
+                if (cooridorList[i].cooridorBlocked)
                 {
-                    for (int location = 0; location < tileLocations[item].Count; location++)
-                    {
-                        if (tileLocations[item][location].x >= posX && tileLocations[item][location].x <= posX + sizeX)
-                        {
-                            cooridorList[item].generateRoom = false; 
-                            break;  
-                        }
-                        if (tileLocations[item][location].y >= posY && tileLocations[item][location].y <= posY + sizeY)
-                        {
-                            cooridorList[item].generateRoom = false;  
-                            break;  
-                        }
-                    }
-                }
-
-                if (cooridorList[i].generateRoom)
-                {
-                    GenerateWall createdRoom = InstantiateRoom(posX, posY, sizeX, sizeY);
-
-                    posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[0];
-                    posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[1];
-
-                    CreateAllExits(createdRoom, 1, true, true, posX, posY, (int)cooridorList[i].currentDirection + 1);
                     cooridorList.Remove(cooridorList[i]);
 
+                }
+                else if (cooridorList[i].generateRoom)
+                {
+                    posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[0];
+                    posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[1];
+                    sizeX = 10;
+                    sizeY = 10;
+                    Vector3Int roomSpawnPos = PlaceRoomPos(cooridorList[i].currentDirection, posX, posY, sizeX, sizeY);
+                    posX = roomSpawnPos.x;
+                    posY = roomSpawnPos.y;
+                    if (tileLocations.LastOrDefault() != null)
+                    {
+                        for (int item = 0; item <= tileLocations.IndexOf(tileLocations.LastOrDefault()); item++) // Check if any tiles in area
+                        {
+                            if (tileLocations[item].LastOrDefault() != null)
+                            {
+                                for (int location = 0; location <= tileLocations[item].IndexOf(tileLocations[item].LastOrDefault()); location++)
+                                {
+                                    if (tileLocations[item][location].x >= posX && tileLocations[item][location].x <= posX + sizeX)
+                                    {
+                                        cooridorList[i].generateRoom = false;
+                                        break;
+                                    }
+                                    if (tileLocations[item][location].y >= posY && tileLocations[item][location].y <= posY + sizeY)
+                                    {
+                                        cooridorList[i].generateRoom = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        cooridorList[i].generateRoom = false;
+                    }
+
+                    if (cooridorList[i].generateRoom && cooridorList[i].cooridorPos.LastOrDefault() != null)
+                    {
+                        GenerateWall spawnedRoom = InstantiateRoom(posX, posY, sizeX, sizeY);
+                        InstantiateExit(spawnedRoom, true, true, cooridorList[i].cooridorPos.LastOrDefault()[1].x, cooridorList[i].cooridorPos.LastOrDefault()[1].y, cooridorList[i].currentDirection);
+                        cooridorList.Remove(cooridorList[i]);
+
+                    }
                 }
             }
         }
     }
-    void CreateAllExits(GenerateWall currentRoom, int numOfExits = -1, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, int exitDirection = 1, List<Vector3Int> openingLocation = null)
+    void CreateAllExits(GenerateWall currentRoom, int numOfExits = -1, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, int exitDirection = 1)
     {
-        List<List<Vector3Int>> exitLocations = new List<List<Vector3Int>>();
 
         if(numOfExits < 0)
         {
             numOfExits = UnityEngine.Random.Range(1, 5);
         }
-        if(openingLocation != null)
-        {
-            exitLocations.Add(openingLocation);
-        }
         for (int i = 0; i < numOfExits; i++)
         {
-           
-            GenerateExit currentExit = Instantiate(exitPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateExit>();
-            currentExit.topLeftCorner = topLeftCorner; 
-            currentExit.topRightCorner = topRightCorner; 
-            currentExit.bottomLeftCorner = bottomLeftCorner;
-            currentExit.bottomRightCorner = bottomRightCorner; 
-            currentExit.walls = currentRoom; 
-            currentExit.wallsTilemap = wallsTileMap; 
-            currentExit.checkPos = exitLocations;
-            currentExit.isOpening = isOpening;
-            if(customExit)
-            {
-                currentExit.customExit = customExit;
-                currentExit.wallX = x; 
-                currentExit.wallY = y;
-                currentExit.wallDirection = exitDirection;
-            }
-            currentExit.CreateExit();
-
-            exitList.Add(currentExit);
-            tileLocations.Add(currentExit.entryPos);
-            exitLocations.Add(currentExit.entryPos);
-            Destroy(currentExit.transform.gameObject);
-
+            GenerateExit currentExit = InstantiateExit(currentRoom, isOpening, customExit);
         }
+    }
+    GenerateExit InstantiateExit(GenerateWall currentRoom, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, Direction exitDirection = Direction.up)
+    {
+        GenerateExit currentExit = Instantiate(exitPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateExit>();
+        currentExit.topLeftCorner = topLeftCorner;
+        currentExit.topRightCorner = topRightCorner;
+        currentExit.bottomLeftCorner = bottomLeftCorner;
+        currentExit.bottomRightCorner = bottomRightCorner;
+        currentExit.walls = currentRoom;
+        currentExit.wallsTilemap = wallsTileMap;
+        currentExit.isOpening = isOpening;
+
+        if (customExit)
+        {
+            currentExit.customExit = customExit;
+            currentExit.wallX = x;
+            currentExit.wallY = y;
+            currentExit.exitDirection = exitDirection;
+        }
+        currentExit.CreateExit();
+
+        exitList.Add(currentExit);
+        tileLocations.Add(currentExit.entryPos);
+        Destroy(currentExit.transform.gameObject);
+
+        return currentExit;
+
     }
     void StartCooridor(GenerateExit currentExit)
     {
@@ -212,13 +216,14 @@ public class RoomManager : MonoBehaviour
         currentRoom.CreateRoom();
         roomList.Add(currentRoom);
         tileLocations.Add(currentRoom.wallList);
+        Destroy(currentRoom);
         return currentRoom;
     }
 
     Vector3Int PlaceRoomPos(Direction currentDirection, int posX, int posY, int sizeX, int sizeY)
     {
         Vector3Int placementLocation = new Vector3Int();
-        int wallX = UnityEngine.Random.Range( ((-sizeX + 1) / 2) + posX, ((sizeX - 1) / 2) + posX);
+        int wallX = UnityEngine.Random.Range(((-sizeX + 1) / 2) + posX, ((sizeX - 1) / 2) + posX);
         int wallY = UnityEngine.Random.Range(((-sizeY + 1) / 2) + posY, ((sizeY - 1) / 2) + posY);
         switch (currentDirection)
         {

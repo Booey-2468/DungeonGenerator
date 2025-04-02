@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -43,7 +44,8 @@ public class GenerateCooridor : MonoBehaviour
     {
         if (!startRepeat)
         {
-            currentPos = start.entryPos[1];
+            if(start.entryPos != null)
+                currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
             startRepeat = true;
         }
@@ -203,11 +205,11 @@ public class GenerateCooridor : MonoBehaviour
             cooridorPos.Add(new List<Vector3Int>() {pos1, pos2, pos3 });
             cooridorCount++;
         }
-        else
+        else if(cooridorPos.LastOrDefault() != null)
         {
-            pos1 = cooridorPos[cooridorPos.Count][0];
-            pos2 = cooridorPos[cooridorPos.Count][1];
-            pos3 = cooridorPos[cooridorPos.Count][2];
+            pos1 = cooridorPos.LastOrDefault()[0];
+            pos2 = cooridorPos.LastOrDefault()[1];
+            pos3 = cooridorPos.LastOrDefault()[2];
 
             wallsTilemap.SetTile(pos1, null);
             wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });
@@ -250,7 +252,6 @@ public class GenerateCooridor : MonoBehaviour
                 localRight = new Vector3Int(0, -1, 0);
                 break;
         }
-        wallsTilemap.SetTile(pos2, null);
         bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null);
         if (!nothingInFront)
         {
@@ -259,6 +260,7 @@ public class GenerateCooridor : MonoBehaviour
         }
         else if (turnLeft)
         {
+            wallsTilemap.SetTile(pos2, null);
             wallsTilemap.SetTile(pos2 + localRight, new Tile() { sprite = sideSprite });
             wallsTilemap.SetTile(pos2 + localLeft, null);
 
@@ -274,6 +276,7 @@ public class GenerateCooridor : MonoBehaviour
         }
         else
         {
+            wallsTilemap.SetTile(pos2, null);
             wallsTilemap.SetTile(pos2 + localLeft, new Tile() { sprite = sideSprite });
 
             wallsTilemap.SetTile(pos2 + localRight, null);
