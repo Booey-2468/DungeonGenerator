@@ -28,7 +28,7 @@ public class GenerateCooridor : MonoBehaviour
     private int cooridorCount = 0;
     public List<List<Vector3Int>> cooridorPos = new List<List<Vector3Int>>();
     public List<Vector3Int> cardinalDirections;
-    public bool cooridorBlocked = false;
+    public bool cooridorBlocked = true;
     private bool startRepeat = false;
     public bool generateRoom = false;
     
@@ -43,7 +43,7 @@ public class GenerateCooridor : MonoBehaviour
     // Update is called once per frame
     void CreateCooridor()
     {
-        if (!startRepeat)
+        if (!startRepeat && !cooridorBlocked)
         {
             currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;

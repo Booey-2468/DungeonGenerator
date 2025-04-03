@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundTileMap: {fileID: 0}
   grass: {fileID: -1681693119, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  grass2: {fileID: 1072247296, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  grass3: {fileID: -1665449778, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   walls: {fileID: 0}
   gridOffset: 1
-  valuesAssigned: 0

@@ -38,7 +38,8 @@ public class GenerateWall : MonoBehaviour
     {
         GenerateGrass createGrass = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
         createGrass.backgroundTileMap = grassTilemap;
-        createGrass.walls = this; createGrass.valuesAssigned = true;
+        createGrass.walls = this;
+        createGrass.CreateGrass();
 
         for (int x = -1; x <= sizeX; x++)
         {

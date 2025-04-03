@@ -91,36 +91,23 @@ public class RoomManager : MonoBehaviour
                 {
                     posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).x;
                     posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).y;
-                    sizeX = 10;
-                    sizeY = 10;
+                    sizeX = UnityEngine.Random.Range(6, 50);
+                    sizeY = UnityEngine.Random.Range(6, 50);
                     Vector3Int roomSpawnPos = PlaceRoomPos(cooridorList[i].currentDirection, posX, posY, sizeX, sizeY);
                     posX = roomSpawnPos.x;
                     posY = roomSpawnPos.y;
-                    if (tileLocations.LastOrDefault() != null)
+
+                    for (int x = posX - 1; x <= posX + sizeX; x++)
                     {
-                        for (int item = 0; item <= tileLocations.IndexOf(tileLocations.LastOrDefault()); item++) // Check if any tiles in area
+                        for(int y = posY - 1; y <= posY + sizeY; y++)
                         {
-                            if (tileLocations[item].LastOrDefault() != null)
+                            if(wallsTileMap.GetSprite(new Vector3Int(x, y, 0)) != null)
                             {
-                                for (int location = 0; location <= tileLocations[item].IndexOf(tileLocations[item].LastOrDefault()); location++)
-                                {
-                                    if (tileLocations[item][location].x >= posX && tileLocations[item][location].x <= posX + sizeX)
-                                    {
-                                        cooridorList[i].generateRoom = false;
-                                        break;
-                                    }
-                                    if (tileLocations[item][location].y >= posY && tileLocations[item][location].y <= posY + sizeY)
-                                    {
-                                        cooridorList[i].generateRoom = false;
-                                        break;
-                                    }
-                                }
+                                cooridorList[i].generateRoom = false;
+                                break;
                             }
                         }
-                    }
-                    else
-                    {
-                        cooridorList[i].generateRoom = false;
+                        if (!cooridorList[i].generateRoom) { break; }
                     }
 
                     if (cooridorList[i].generateRoom && cooridorList[i].cooridorPos.LastOrDefault() != null)
@@ -148,7 +135,7 @@ public class RoomManager : MonoBehaviour
         }
         for (int i = 0; i < numOfExits; i++)
         {
-            GenerateExit currentExit = InstantiateExit(currentRoom);
+            InstantiateExit(currentRoom);
         }
     }
     GenerateExit InstantiateExit(GenerateWall currentRoom, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, Direction exitDirection = Direction.up)
@@ -178,6 +165,10 @@ public class RoomManager : MonoBehaviour
         return currentExit;
 
     }
+    /// <summary>
+    /// Initialises and Starts the creation of the cooridor
+    /// </summary>
+    /// <param name="currentExit"></param>
     void StartCooridor(GenerateExit currentExit)
     {
         GenerateCooridor currentCooridor = Instantiate(cooridorPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateCooridor>();
@@ -192,6 +183,7 @@ public class RoomManager : MonoBehaviour
         currentCooridor.wallsTilemap = wallsTileMap; 
         currentCooridor.cardinalDirections = cardinalDirections;
         currentCooridor.start = currentExit;
+        currentCooridor.cooridorBlocked = false;
         cooridorList.Add(currentCooridor);
 
         for (int i = 0; i < currentCooridor.cooridorPos.Count; i++)
@@ -228,8 +220,6 @@ public class RoomManager : MonoBehaviour
     Vector3Int PlaceRoomPos(Direction currentDirection, int posX, int posY, int sizeX, int sizeY)
     {
         Vector3Int placementLocation = new Vector3Int();
-        //int wallX = UnityEngine.Random.Range(posX - (sizeX / 2) + 2, posX + (sizeX/ 2) - 2); previously used code
-        //int wallY = UnityEngine.Random.Range(posY - (sizeY / 2) + 2, posY + (sizeY / 2) - 2);
         int wallX = UnityEngine.Random.Range(posX - sizeX + 2, posX - 1);
         int wallY = UnityEngine.Random.Range(posY - sizeY + 2, posY - 1);
         switch (currentDirection)
