@@ -22,6 +22,7 @@ public class GenerateCooridor : MonoBehaviour
     private Vector3Int pos3;
     public Vector3Int currentPos;
     public Direction currentDirection;
+    Direction bannedDirection;
     private int moveNum = 1;
     private bool isCorner = false;
     private int cooridorCount = 0;
@@ -44,10 +45,11 @@ public class GenerateCooridor : MonoBehaviour
     {
         if (!startRepeat)
         {
-            if(start.entryPos != null)
-                currentPos = start.entryPos[1];
+            currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
             startRepeat = true;
+            if (start.exitDirection == Direction.left || start.exitDirection == Direction.up) { bannedDirection = start.exitDirection + 1; }
+            else { bannedDirection = start.exitDirection - 1; }
         }
         if (startRepeat && !generateRoom && !cooridorBlocked)
         {
@@ -73,7 +75,7 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = topWall;
                     terminatingSprite = rightWall;
 
-                    if (leftOrRight == 1 && isCorner)
+                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.down)
                     {
                         turnLeft = true;
                         turningSpriteList = new List<Sprite>() { bottomWall, topLeftCorner, rightWall };
@@ -83,7 +85,7 @@ public class GenerateCooridor : MonoBehaviour
                         
                         currentDirection = Direction.down;
                     }
-                    else if (leftOrRight == 0 && isCorner)
+                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.up)
                     {
                         turningSpriteList = new List<Sprite>() { topWall, bottomLeftCorner, rightWall };
 
@@ -102,7 +104,7 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = leftWall;
                     terminatingSprite = bottomWall;
 
-                    if (leftOrRight == 1 && isCorner)
+                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.left)
                     {
                         turnLeft = true;
                         turningSpriteList = new List<Sprite>() { leftWall, topRightCorner, bottomWall };
@@ -112,7 +114,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.left;
                     }
-                    else if (leftOrRight == 0 && isCorner)
+                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.right)
                     {
                         turningSpriteList = new List<Sprite>() { rightWall, topLeftCorner, bottomWall };
 
@@ -132,7 +134,7 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = topWall;
                     terminatingSprite = leftWall;
 
-                    if (leftOrRight == 1 && isCorner)
+                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.up)
                     {
                         turnLeft = true;
                         turningSpriteList = new List<Sprite>() { topWall, bottomRightCorner, leftWall };
@@ -142,7 +144,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.up;
                     }
-                    else if (leftOrRight == 0 && isCorner)
+                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.down)
                     {
                         turningSpriteList = new List<Sprite>() { bottomWall, topRightCorner, leftWall };
 
@@ -161,7 +163,7 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = leftWall;
                     terminatingSprite = topWall;
 
-                    if (leftOrRight == 1 && isCorner)
+                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.right)
                     {
                         turnLeft = true;
                         turningSpriteList = new List<Sprite>() { rightWall, bottomLeftCorner, topWall };
@@ -171,7 +173,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.right;
                     }
-                    else if(leftOrRight == 0 && isCorner)
+                    else if(leftOrRight == 0 && isCorner && bannedDirection != Direction.up)
                     {
                         turningSpriteList = new List<Sprite>() { leftWall, bottomRightCorner, topWall };
 
@@ -182,7 +184,7 @@ public class GenerateCooridor : MonoBehaviour
                     }
                     break;
             }
-            if (!isCorner)
+            if (!isCorner || turningSpriteList.Contains(null))
             {
                 SetCooridor(pos1, pos2, pos3, sprite1, sprite2, terminatingSprite);
             }

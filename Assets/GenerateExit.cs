@@ -49,8 +49,6 @@ public class GenerateExit : MonoBehaviour
             exitDirection = (Direction)UnityEngine.Random.Range(0, 4);
         }
 
-        int wallAlign = 1;
-
         // 1 is left | 2 is up | 3 is right | 4 is down
         switch (exitDirection)
         {
@@ -98,8 +96,11 @@ public class GenerateExit : MonoBehaviour
         List<Sprite> bannedSprites = new List<Sprite>(){topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner, null};
 
         bool intersectingExit = (!bannedSprites.Contains(wallsTilemap.GetSprite(pos1)) && !bannedSprites.Contains(wallsTilemap.GetSprite(pos2)) && !bannedSprites.Contains(wallsTilemap.GetSprite(pos3)));
-
-        bool isNotBlocked = (wallsTilemap.GetTile(pos1 + cardinalDirections[(int)exitDirection]) == null && wallsTilemap.GetTile(pos2 + cardinalDirections[(int)exitDirection]) == null && wallsTilemap.GetTile(pos3 + cardinalDirections[(int)exitDirection]) == null);
+        bool isNotBlocked = true;
+        if (!isOpening)
+        {
+            isNotBlocked = (wallsTilemap.GetTile(pos1 + cardinalDirections[(int)exitDirection]) == null && wallsTilemap.GetTile(pos2 + cardinalDirections[(int)exitDirection]) == null && wallsTilemap.GetTile(pos3 + cardinalDirections[(int)exitDirection]) == null);
+        }
         if (intersectingExit && isNotBlocked)
         {
             wallsTilemap.SetTile(pos1, new Tile() { sprite = sprite1 });

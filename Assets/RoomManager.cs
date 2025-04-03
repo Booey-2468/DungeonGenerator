@@ -89,8 +89,8 @@ public class RoomManager : MonoBehaviour
                 }
                 else if (cooridorList[i].generateRoom)
                 {
-                    posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[0];
-                    posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection])[1];
+                    posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).x;
+                    posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).y;
                     sizeX = 10;
                     sizeY = 10;
                     Vector3Int roomSpawnPos = PlaceRoomPos(cooridorList[i].currentDirection, posX, posY, sizeX, sizeY);
@@ -126,7 +126,12 @@ public class RoomManager : MonoBehaviour
                     if (cooridorList[i].generateRoom && cooridorList[i].cooridorPos.LastOrDefault() != null)
                     {
                         GenerateWall spawnedRoom = InstantiateRoom(posX, posY, sizeX, sizeY);
-                        InstantiateExit(spawnedRoom, true, true, cooridorList[i].cooridorPos.LastOrDefault()[1].x, cooridorList[i].cooridorPos.LastOrDefault()[1].y, cooridorList[i].currentDirection);
+
+                        Direction openingDirection;
+                        if (cooridorList[i].currentDirection == Direction.left || cooridorList[i].currentDirection == Direction.up) { openingDirection = cooridorList[i].currentDirection + 1; }
+                        else { openingDirection = cooridorList[i].currentDirection - 1; }
+
+                        InstantiateExit(spawnedRoom, true, true, cooridorList[i].cooridorPos.LastOrDefault()[1].x, cooridorList[i].cooridorPos.LastOrDefault()[1].y, openingDirection);
                         cooridorList.Remove(cooridorList[i]);
 
                     }
@@ -134,7 +139,7 @@ public class RoomManager : MonoBehaviour
             }
         }
     }
-    void CreateAllExits(GenerateWall currentRoom, int numOfExits = -1, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, int exitDirection = 1)
+    void CreateAllExits(GenerateWall currentRoom, int numOfExits = -1)
     {
 
         if(numOfExits < 0)
@@ -143,7 +148,7 @@ public class RoomManager : MonoBehaviour
         }
         for (int i = 0; i < numOfExits; i++)
         {
-            GenerateExit currentExit = InstantiateExit(currentRoom, isOpening, customExit);
+            GenerateExit currentExit = InstantiateExit(currentRoom);
         }
     }
     GenerateExit InstantiateExit(GenerateWall currentRoom, bool isOpening = false, bool customExit = false, int x = 0, int y = 0, Direction exitDirection = Direction.up)
@@ -216,19 +221,21 @@ public class RoomManager : MonoBehaviour
         currentRoom.CreateRoom();
         roomList.Add(currentRoom);
         tileLocations.Add(currentRoom.wallList);
-        Destroy(currentRoom);
+        Destroy(currentRoom.transform.gameObject);
         return currentRoom;
     }
 
     Vector3Int PlaceRoomPos(Direction currentDirection, int posX, int posY, int sizeX, int sizeY)
     {
         Vector3Int placementLocation = new Vector3Int();
-        int wallX = UnityEngine.Random.Range(((-sizeX + 1) / 2) + posX, ((sizeX - 1) / 2) + posX);
-        int wallY = UnityEngine.Random.Range(((-sizeY + 1) / 2) + posY, ((sizeY - 1) / 2) + posY);
+        //int wallX = UnityEngine.Random.Range(posX - (sizeX / 2) + 2, posX + (sizeX/ 2) - 2); previously used code
+        //int wallY = UnityEngine.Random.Range(posY - (sizeY / 2) + 2, posY + (sizeY / 2) - 2);
+        int wallX = UnityEngine.Random.Range(posX - sizeX + 2, posX - 1);
+        int wallY = UnityEngine.Random.Range(posY - sizeY + 2, posY - 1);
         switch (currentDirection)
         {
             case Direction.left:
-                placementLocation = new Vector3Int(-sizeX + posX, wallY, 0);
+                placementLocation = new Vector3Int(posX - sizeX, wallY, 0);
                 break;
             case Direction.right:
                 placementLocation = new Vector3Int( posX, wallY, 0);
@@ -238,7 +245,7 @@ public class RoomManager : MonoBehaviour
 
                 break;
             case Direction.down:
-                placementLocation = new Vector3Int( wallX , -sizeY + posY, 0);
+                placementLocation = new Vector3Int( wallX , posY - sizeY, 0);
                 break;
         }
         return placementLocation;
