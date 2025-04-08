@@ -28,22 +28,26 @@ public class GenerateCooridor : MonoBehaviour
     private int cooridorCount = 0;
     public List<List<Vector3Int>> cooridorPos = new List<List<Vector3Int>>();
     public List<Vector3Int> cardinalDirections;
-    public bool cooridorBlocked = true;
+    public bool cooridorBlocked = false;
     private bool startRepeat = false;
     public bool generateRoom = false;
+    public bool hasBeenCalled = false;
     
 
     // Start is called before the first frame update
     void Update()
     {
-        CreateCooridor();
+        if (hasBeenCalled && !cooridorBlocked && !generateRoom)
+        {
+            CreateCooridor();
+        }
 
     }
 
     // Update is called once per frame
-    void CreateCooridor()
+    public void CreateCooridor()
     {
-        if (!startRepeat && !cooridorBlocked)
+        if (!startRepeat && start.entryPos.Count >= 2)
         {
             currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
@@ -51,7 +55,7 @@ public class GenerateCooridor : MonoBehaviour
             if (start.exitDirection == Direction.left || start.exitDirection == Direction.up) { bannedDirection = start.exitDirection + 1; }
             else { bannedDirection = start.exitDirection - 1; }
         }
-        if (startRepeat && !generateRoom && !cooridorBlocked)
+        if (startRepeat)
         {
             int turnChance = UnityEngine.Random.Range(1, 100);
             int leftOrRight = UnityEngine.Random.Range(0, 2);
@@ -94,6 +98,10 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.up;
                     }
+                    else
+                    {
+                        isCorner = false;
+                    }
                     break;
                 case Direction.up:
                     pos1 = new Vector3Int(currentPos[0] - moveNum, currentPos[1] + moveNum, 0);
@@ -122,6 +130,10 @@ public class GenerateCooridor : MonoBehaviour
                         pos1 = returnStore[0]; pos2 = returnStore[1]; pos3 = returnStore[2];
 
                         currentDirection = Direction.right;
+                    }
+                    else
+                    {
+                        isCorner = false;
                     }
                     break;
                 case Direction.right:
@@ -153,6 +165,10 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.down;
                     }
+                    else
+                    {
+                        isCorner = false;
+                    }
                     break;
                 case Direction.down:
                     pos1 = new Vector3Int(currentPos[0] - moveNum, currentPos[1] - moveNum, 0);
@@ -182,6 +198,10 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.left;
                     }
+                    else
+                    {
+                        isCorner = false;
+                    }
                     break;
             }
             if (!isCorner || turningSpriteList.Contains(null))
@@ -195,6 +215,7 @@ public class GenerateCooridor : MonoBehaviour
 
             currentPos = pos2;
         }
+        hasBeenCalled = true;
     }
     private void SetCooridor(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Sprite sprite1, Sprite sprite2, Sprite terminatingSprite)
     {
@@ -254,7 +275,7 @@ public class GenerateCooridor : MonoBehaviour
                 localRight = new Vector3Int(0, -1, 0);
                 break;
         }
-        bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null);
+        bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null && wallsTilemap.GetTile(pos2 + localUp + localRight) == null && wallsTilemap.GetTile(pos2 + localUp + localLeft) == null);
         if (!nothingInFront)
         {
             cooridorBlocked = true;

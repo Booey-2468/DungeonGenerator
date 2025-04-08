@@ -183,7 +183,7 @@ public class RoomManager : MonoBehaviour
         currentCooridor.wallsTilemap = wallsTileMap; 
         currentCooridor.cardinalDirections = cardinalDirections;
         currentCooridor.start = currentExit;
-        currentCooridor.cooridorBlocked = false;
+        currentCooridor.CreateCooridor();
         cooridorList.Add(currentCooridor);
 
         for (int i = 0; i < currentCooridor.cooridorPos.Count; i++)
