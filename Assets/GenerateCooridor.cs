@@ -47,7 +47,7 @@ public class GenerateCooridor : MonoBehaviour
     // Update is called once per frame
     public void CreateCooridor()
     {
-        if (!startRepeat && start.entryPos.Count >= 2)
+        if (!startRepeat && start.entryPos.Count > 1)
         {
             currentPos = start.entryPos[1];
             currentDirection = start.exitDirection;
