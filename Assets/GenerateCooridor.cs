@@ -16,6 +16,7 @@ public class GenerateCooridor : MonoBehaviour
     public Sprite topRightCorner;
     public Sprite bottomLeftCorner;
     public Sprite bottomRightCorner;
+    public Sprite stoppingSprite;
     public Tilemap wallsTilemap;
     private Vector3Int pos1;
     private Vector3Int pos2;
@@ -41,6 +42,10 @@ public class GenerateCooridor : MonoBehaviour
         {
             CreateCooridor();
         }
+        else if(cooridorBlocked || generateRoom)
+        {
+            //Debug.Log("Cooridor Blocked:" + cooridorBlocked + " Room Generated:" + generateRoom);
+        }
 
     }
 
@@ -58,8 +63,7 @@ public class GenerateCooridor : MonoBehaviour
         if (startRepeat)
         {
             int turnChance = UnityEngine.Random.Range(1, 100);
-            int leftOrRight = UnityEngine.Random.Range(0, 2);
-            bool turnLeft = false;
+            bool turnLeft = (UnityEngine.Random.Range(0, 2) == 1);
             Sprite sprite1 = null;
             Sprite sprite2 = null;
             Sprite terminatingSprite = null;
@@ -79,9 +83,8 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = topWall;
                     terminatingSprite = rightWall;
 
-                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.down)
+                    if (turnLeft && isCorner && bannedDirection != Direction.down)
                     {
-                        turnLeft = true;
                         turningSpriteList = new List<Sprite>() { bottomWall, topLeftCorner, rightWall };
 
                         List<Vector3Int> returnStore = SetCorner(pos1, pos2, pos3, currentDirection, turnLeft, turningSpriteList[0], turningSpriteList[1], turningSpriteList[2]);
@@ -89,7 +92,7 @@ public class GenerateCooridor : MonoBehaviour
                         
                         currentDirection = Direction.down;
                     }
-                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.up)
+                    else if (!turnLeft && isCorner && bannedDirection != Direction.up)
                     {
                         turningSpriteList = new List<Sprite>() { topWall, bottomLeftCorner, rightWall };
 
@@ -112,9 +115,8 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = leftWall;
                     terminatingSprite = bottomWall;
 
-                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.left)
+                    if (turnLeft && isCorner && bannedDirection != Direction.left)
                     {
-                        turnLeft = true;
                         turningSpriteList = new List<Sprite>() { leftWall, topRightCorner, bottomWall };
 
                         List<Vector3Int> returnStore = SetCorner(pos1, pos2, pos3, currentDirection, turnLeft, turningSpriteList[0], turningSpriteList[1], turningSpriteList[2]);
@@ -122,7 +124,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.left;
                     }
-                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.right)
+                    else if (!turnLeft && isCorner && bannedDirection != Direction.right)
                     {
                         turningSpriteList = new List<Sprite>() { rightWall, topLeftCorner, bottomWall };
 
@@ -146,9 +148,8 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = topWall;
                     terminatingSprite = leftWall;
 
-                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.up)
+                    if (turnLeft && isCorner && bannedDirection != Direction.up)
                     {
-                        turnLeft = true;
                         turningSpriteList = new List<Sprite>() { topWall, bottomRightCorner, leftWall };
 
                         List<Vector3Int> returnStore = SetCorner(pos1, pos2, pos3, currentDirection, turnLeft, turningSpriteList[0], turningSpriteList[1], turningSpriteList[2]);
@@ -156,7 +157,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.up;
                     }
-                    else if (leftOrRight == 0 && isCorner && bannedDirection != Direction.down)
+                    else if (!turnLeft && isCorner && bannedDirection != Direction.down)
                     {
                         turningSpriteList = new List<Sprite>() { bottomWall, topRightCorner, leftWall };
 
@@ -179,9 +180,8 @@ public class GenerateCooridor : MonoBehaviour
                     sprite2 = leftWall;
                     terminatingSprite = topWall;
 
-                    if (leftOrRight == 1 && isCorner && bannedDirection != Direction.right)
+                    if (turnLeft && isCorner && bannedDirection != Direction.right)
                     {
-                        turnLeft = true;
                         turningSpriteList = new List<Sprite>() { rightWall, bottomLeftCorner, topWall };
 
                         List<Vector3Int> returnStore = SetCorner(pos1, pos2, pos3, currentDirection, turnLeft, turningSpriteList[0], turningSpriteList[1], turningSpriteList[2]);
@@ -189,7 +189,7 @@ public class GenerateCooridor : MonoBehaviour
 
                         currentDirection = Direction.right;
                     }
-                    else if(leftOrRight == 0 && isCorner && bannedDirection != Direction.up)
+                    else if(!turnLeft && isCorner && bannedDirection != Direction.up)
                     {
                         turningSpriteList = new List<Sprite>() { leftWall, bottomRightCorner, topWall };
 
@@ -239,15 +239,18 @@ public class GenerateCooridor : MonoBehaviour
 
     public void BlockCorridor(Sprite terminatingSprite)
     {
+        List<Sprite> cornerSprites = new List<Sprite>() { topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner};
         if (cooridorPos.LastOrDefault() != null)    //Ensures cooridorPos is not null
         {
             pos1 = cooridorPos.LastOrDefault()[0];
             pos2 = cooridorPos.LastOrDefault()[1];  //Stores most recent positions
             pos3 = cooridorPos.LastOrDefault()[2];
-
-            wallsTilemap.SetTile(pos1, null);
+            if (!cornerSprites.Contains(wallsTilemap.GetSprite(pos1)) && !cornerSprites.Contains(wallsTilemap.GetSprite(pos3)))
+            {
+                wallsTilemap.SetTile(pos1, null);
+                wallsTilemap.SetTile(pos3, null);
+            }
             wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });  // Setting tiles using terminating sprite and making sure cooridor is set as blocked
-            wallsTilemap.SetTile(pos3, null);
             cooridorBlocked = true;
         }
     }
@@ -260,35 +263,35 @@ public class GenerateCooridor : MonoBehaviour
         switch (initialDirection)
         {
             case Direction.up:
-                localUp = new Vector3Int(0,1,0);
-                localDown = new Vector3Int(0,-1,0);
-                localLeft = new Vector3Int(-1, 0, 0);
-                localRight = new Vector3Int(1, 0, 0);
+                localUp = Vector3Int.up;
+                localDown = Vector3Int.down;
+                localLeft = Vector3Int.left;
+                localRight = Vector3Int.right;
                 break;
             case Direction.down:
-                localUp = new Vector3Int(0, -1, 0);
-                localDown = new Vector3Int(0, 1, 0);
-                localLeft = new Vector3Int(1, 0, 0);
-                localRight = new Vector3Int(-1, 0, 0);
+                localUp = Vector3Int.down;
+                localDown = Vector3Int.up;
+                localLeft = Vector3Int.right;
+                localRight = Vector3Int.left;
                 break;
             case Direction.left:
-                localUp = new Vector3Int(-1, 0, 0);
-                localDown = new Vector3Int(1, 0, 0);
-                localLeft = new Vector3Int(0, -1, 0);
-                localRight = new Vector3Int(0, 1, 0);
+                localUp = Vector3Int.left;
+                localDown = Vector3Int.right;
+                localLeft = Vector3Int.down;
+                localRight = Vector3Int.up;
                 break;
             case Direction.right:
-                localUp = new Vector3Int(1, 0, 0);
-                localDown = new Vector3Int(-1, 0, 0);
-                localLeft = new Vector3Int(0, 1, 0);
-                localRight = new Vector3Int(0, -1, 0);
+                localUp = Vector3Int.right;
+                localDown = Vector3Int.left;
+                localLeft = Vector3Int.up;
+                localRight = Vector3Int.down;
                 break;
         }
         // Ensures that there is nothing in the way so the corner can properly turn
         bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null && wallsTilemap.GetTile(pos2 + localUp + localRight) == null && wallsTilemap.GetTile(pos2 + localUp + localLeft) == null);
         if (!nothingInFront)
         {
-            cooridorBlocked = true;
+            BlockCorridor(stoppingSprite);
             return new List<Vector3Int>() { pos1, pos2, pos3 }; // Returns with cooridorblocked if;
         }
         else if (turnLeft)
@@ -296,7 +299,6 @@ public class GenerateCooridor : MonoBehaviour
             wallsTilemap.SetTile(pos2, null);
             wallsTilemap.SetTile(pos2 + localRight, new Tile() { sprite = sideSprite });
             wallsTilemap.SetTile(pos2 + localLeft, null);
-
 
             wallsTilemap.SetTile(pos2 + localLeft + localDown, new Tile() { sprite = cornerSprite });
 

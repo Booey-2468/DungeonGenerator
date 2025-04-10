@@ -16,10 +16,11 @@ public class PlayerMovement : MonoBehaviour
     {
         
         Vector3 moveVec = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
+        moveVec = Vector3.Normalize(moveVec);
 
         //transform.position += moveVec * 20 * Time.deltaTime;
 
-        body.MovePosition(body.position + (Vector2)moveVec * 20 * Time.deltaTime);
+        body.MovePosition(body.position + (Vector2)moveVec * 15 * Time.deltaTime);
         //Debug.DrawLine(transform.position, moveVec * 20, Color.red, 600000);
 
 

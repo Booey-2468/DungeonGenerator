@@ -45,7 +45,6 @@ public class RoomManager : MonoBehaviour
     int posX = -5, posY = -5, sizeX = 10, sizeY = 10;
     void Awake()
     {
-        List<Sprite> spriteList = new List<Sprite>() { topWall, bottomWall, leftWall, rightWall, topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner};
         InstantiateRoom(posX, posY, sizeX, sizeY);
     }
     // Update is called once per frame
@@ -66,8 +65,10 @@ public class RoomManager : MonoBehaviour
                 {
                     if (!cooridorList[i].cooridorBlocked)
                     {
-
+                        cooridorList[i].CreateCooridor();
                         cooridorList[i].BlockCorridor(stoppingSprite);
+                        Destroy(cooridorList[i].gameObject);
+                        cooridorList.Remove(cooridorList[i]);
                     }
                 }
             }
@@ -100,14 +101,19 @@ public class RoomManager : MonoBehaviour
 
         }
     }
+
+    /// <summary>
+    /// This creates a room and an opening to the room it also checks if the room can be spawned in the first place and carries on if it can't
+    /// </summary>
     void CreateRoomFromCooridor()
     {
         if (cooridorList.LastOrDefault() != null)
         {
-            for (int i = 0; i < cooridorList.IndexOf(cooridorList.LastOrDefault()); i++)
+            for (int i = 0; i < cooridorList.Count; i++)
             {
                 if (cooridorList[i].cooridorBlocked)
                 {
+                    Destroy(cooridorList[i].gameObject);
                     cooridorList.Remove(cooridorList[i]);
 
                 }
@@ -130,6 +136,9 @@ public class RoomManager : MonoBehaviour
                                 cooridorList[i].generateRoom = false;
                                 break;
                             }
+                            else
+                            {
+                            }
                         }
                         if (!cooridorList[i].generateRoom) { break; }
                     }
@@ -147,17 +156,21 @@ public class RoomManager : MonoBehaviour
                         cooridorList.Remove(cooridorList[i]);
 
                     }
+                    else
+                    {
+                        cooridorList[i].generateRoom = false;
+                    }
                 }
             }
         }
     }
-    void CreateAllExits(GenerateWall currentRoom, int numOfExits = -1)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="currentRoom">The room from which exits can be created</param>
+    void CreateAllExits(GenerateWall currentRoom)
     {
-
-        if(numOfExits < 0)
-        {
-            numOfExits = UnityEngine.Random.Range(1, 5);
-        }
+        int numOfExits = UnityEngine.Random.Range(1, 5);
         for (int i = 0; i < numOfExits; i++)
         {
             InstantiateExit(currentRoom);
@@ -185,7 +198,6 @@ public class RoomManager : MonoBehaviour
 
         exitList.Add(currentExit);
         tileLocations.Add(currentExit.entryPos);
-
         return currentExit;
 
     }
@@ -204,6 +216,7 @@ public class RoomManager : MonoBehaviour
         currentCooridor.topRightCorner = topRightCorner; 
         currentCooridor.bottomLeftCorner = bottomLeftCorner;
         currentCooridor.bottomRightCorner = bottomRightCorner; 
+        currentCooridor.stoppingSprite = stoppingSprite;
         currentCooridor.wallsTilemap = wallsTileMap; 
         currentCooridor.cardinalDirections = cardinalDirections;
         currentCooridor.start = currentExit;

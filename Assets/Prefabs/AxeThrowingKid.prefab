@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8275502614680900143}
   - component: {fileID: -8923464234863566517}
   - component: {fileID: 7006114692703051679}
+  - component: {fileID: 7659280311144002387}
   m_Layer: 0
   m_Name: AxeThrowingKid
   m_TagString: Untagged
@@ -149,6 +150,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.05}
   m_Size: {x: 1, y: 0.9}
   m_Direction: 1
+--- !u!114 &7659280311144002387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371537156775062013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea65940a658092b45ba394e981ece3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
 --- !u!1 &4628848729348163111
 GameObject:
   m_ObjectHideFlags: 0
