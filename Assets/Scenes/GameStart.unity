@@ -259,6 +259,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7393582074820062231, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7393582074820062231, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7455850447855904748, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.57
@@ -364,6 +372,7 @@ MonoBehaviour:
   topRightCorner: {fileID: -999308992, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   bottomLeftCorner: {fileID: 168700486, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   bottomRightCorner: {fileID: 502968462, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  stoppingSprite: {fileID: -1676260070, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   wallsTileMap: {fileID: 1768319058}
   grassTileMap: {fileID: 1894392325}
   roomPrefab: {fileID: 5719961116749379582, guid: 26ba5d433f33fc9429ea9a82c5d2f0e3, type: 3}

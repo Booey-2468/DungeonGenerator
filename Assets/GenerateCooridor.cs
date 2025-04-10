@@ -37,7 +37,7 @@ public class GenerateCooridor : MonoBehaviour
     // Start is called before the first frame update
     void Update()
     {
-        if (hasBeenCalled && !cooridorBlocked && !generateRoom)
+        if (hasBeenCalled && !cooridorBlocked && !generateRoom) //Ensures that the function has been called and that the cooridor isnt blocked or generating a room
         {
             CreateCooridor();
         }
@@ -219,35 +219,44 @@ public class GenerateCooridor : MonoBehaviour
     }
     private void SetCooridor(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Sprite sprite1, Sprite sprite2, Sprite terminatingSprite)
     {
-        if (wallsTilemap.GetTile(pos1) == null && wallsTilemap.GetTile(pos2) == null && wallsTilemap.GetTile(pos3) == null)
+        bool nothingInFront = (wallsTilemap.GetTile(pos1) == null && wallsTilemap.GetTile(pos2) == null && wallsTilemap.GetTile(pos3) == null);
+
+        // Checks that nothing is in front for cooridor to be placed
+        if (nothingInFront)
         {
             wallsTilemap.SetTile(pos1, new Tile() { sprite = sprite1 });
             wallsTilemap.SetTile(pos2, null);
-            wallsTilemap.SetTile(pos3, new Tile() { sprite = sprite2 });
+            wallsTilemap.SetTile(pos3, new Tile() { sprite = sprite2 });    //Set Tiles for cooridor walls and opening and add to cooridorPos
 
             cooridorPos.Add(new List<Vector3Int>() {pos1, pos2, pos3 });
-            cooridorCount++;
+            cooridorCount++;    // Also increments cooridor count to know how many cooridors have occurred in a row
         }
-        else if(cooridorPos.LastOrDefault() != null)
+        else
+        {
+            BlockCorridor(terminatingSprite);
+        }
+    }
+
+    public void BlockCorridor(Sprite terminatingSprite)
+    {
+        if (cooridorPos.LastOrDefault() != null)    //Ensures cooridorPos is not null
         {
             pos1 = cooridorPos.LastOrDefault()[0];
-            pos2 = cooridorPos.LastOrDefault()[1];
+            pos2 = cooridorPos.LastOrDefault()[1];  //Stores most recent positions
             pos3 = cooridorPos.LastOrDefault()[2];
 
             wallsTilemap.SetTile(pos1, null);
-            wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });
+            wallsTilemap.SetTile(pos2, new Tile() { sprite = terminatingSprite });  // Setting tiles using terminating sprite and making sure cooridor is set as blocked
             wallsTilemap.SetTile(pos3, null);
             cooridorBlocked = true;
         }
     }
-
-
     private List<Vector3Int> SetCorner(Vector3Int pos1, Vector3Int pos2, Vector3Int pos3, Direction initialDirection, bool turnLeft, Sprite sideSprite, Sprite cornerSprite, Sprite upperSprite)
     {
         Vector3Int localUp = new Vector3Int(0,0,0);
         Vector3Int localDown = new Vector3Int(0,0,0);
         Vector3Int localLeft = new Vector3Int(0, 0, 0);
-        Vector3Int localRight = new Vector3Int(0, 0, 0);
+        Vector3Int localRight = new Vector3Int(0, 0, 0);    // Decide local directions with switch based on current direction enum
         switch (initialDirection)
         {
             case Direction.up:
@@ -275,11 +284,12 @@ public class GenerateCooridor : MonoBehaviour
                 localRight = new Vector3Int(0, -1, 0);
                 break;
         }
+        // Ensures that there is nothing in the way so the corner can properly turn
         bool nothingInFront = (wallsTilemap.GetTile(pos2 + localRight) == null && wallsTilemap.GetTile(pos2 + localLeft) == null && wallsTilemap.GetTile(pos2 + localUp) == null && wallsTilemap.GetTile(pos2 + localUp + localRight) == null && wallsTilemap.GetTile(pos2 + localUp + localLeft) == null);
         if (!nothingInFront)
         {
             cooridorBlocked = true;
-            return new List<Vector3Int>() { pos1, pos2, pos3 };
+            return new List<Vector3Int>() { pos1, pos2, pos3 }; // Returns with cooridorblocked if;
         }
         else if (turnLeft)
         {

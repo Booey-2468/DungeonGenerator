@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.U2D.Animation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class RoomManager : MonoBehaviour
@@ -17,6 +18,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private Sprite topRightCorner;
     [SerializeField] private Sprite bottomLeftCorner;
     [SerializeField] private Sprite bottomRightCorner;
+    [SerializeField] private Sprite stoppingSprite;
     [SerializeField] private Tilemap wallsTileMap;
     [SerializeField] private Tilemap grassTileMap;
 
@@ -26,6 +28,7 @@ public class RoomManager : MonoBehaviour
     GameObject roomSpawner;
     private List<List<Vector3Int>> tileLocations = new List<List<Vector3Int>>();
     private List<GenerateWall> roomList = new List<GenerateWall>();
+    private List<GenerateWall> totalRoomList = new List<GenerateWall>();
     private List<GenerateExit> exitList = new List<GenerateExit>();
     private List<GenerateCooridor> cooridorList = new List<GenerateCooridor>();
 
@@ -48,12 +51,31 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (roomList.Count < 10)
+        if (totalRoomList.Count < 10)
         {
             CreateBranchingExits();
             CreateCooridorFromExit();
             CreateRoomFromCooridor();
 
+        }
+        else if(totalRoomList.Count >= 10)
+        {
+            if (cooridorList.LastOrDefault() != null)
+            {
+                for (int i = 0; i < cooridorList.IndexOf(cooridorList.LastOrDefault()); i++)
+                {
+                    if (!cooridorList[i].cooridorBlocked)
+                    {
+
+                        cooridorList[i].BlockCorridor(stoppingSprite);
+                    }
+                }
+            }
+
+        }
+        else if (totalRoomList.Count < 2 && cooridorList.Count == 0 )
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     void CreateBranchingExits()
@@ -61,6 +83,7 @@ public class RoomManager : MonoBehaviour
         for (int i = 0; i < roomList.Count; i++)
         {
             CreateAllExits(roomList[i]);
+            Destroy(roomList[i].gameObject);
             roomList.Remove(roomList[i]);
         }
     }
@@ -71,6 +94,7 @@ public class RoomManager : MonoBehaviour
             if (!exitList[i].isOpening)
             {
                 StartCooridor(exitList[i]);
+                Destroy(exitList[i].gameObject);
                 exitList.Remove(exitList[i]);
             }
 
@@ -119,6 +143,7 @@ public class RoomManager : MonoBehaviour
                         else { openingDirection = cooridorList[i].currentDirection - 1; }
 
                         InstantiateExit(spawnedRoom, true, true, cooridorList[i].cooridorPos.LastOrDefault()[1].x, cooridorList[i].cooridorPos.LastOrDefault()[1].y, openingDirection);
+                        Destroy(cooridorList[i].gameObject);
                         cooridorList.Remove(cooridorList[i]);
 
                     }
@@ -160,7 +185,6 @@ public class RoomManager : MonoBehaviour
 
         exitList.Add(currentExit);
         tileLocations.Add(currentExit.entryPos);
-        Destroy(currentExit.transform.gameObject);
 
         return currentExit;
 
@@ -212,8 +236,8 @@ public class RoomManager : MonoBehaviour
         currentRoom.gridOffset = 1;
         currentRoom.CreateRoom();
         roomList.Add(currentRoom);
+        totalRoomList.Add(currentRoom);
         tileLocations.Add(currentRoom.wallList);
-        Destroy(currentRoom.transform.gameObject);
         return currentRoom;
     }
 
