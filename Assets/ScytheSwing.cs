@@ -20,7 +20,7 @@ public class ScytheSwing : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Mouse0))
         {
-            transform.Rotate(new Vector3(0, 0, -1));
+            transform.Rotate(new Vector3(0, 0, -10));
             if(Input.GetAxis("Horizontal") > 0.1)
             {
                 transform.localPosition = Vector3.right;
