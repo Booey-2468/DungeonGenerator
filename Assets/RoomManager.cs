@@ -61,7 +61,7 @@ public class RoomManager : MonoBehaviour
         {
             if (cooridorList.LastOrDefault() != null)
             {
-                for (int i = 0; i < cooridorList.IndexOf(cooridorList.LastOrDefault()); i++)
+                for (int i = cooridorList.IndexOf(cooridorList.LastOrDefault()); i >= 0; i--)
                 {
                     if (!cooridorList[i].cooridorBlocked)
                     {
@@ -107,17 +107,18 @@ public class RoomManager : MonoBehaviour
     /// </summary>
     void CreateRoomFromCooridor()
     {
-        if (cooridorList.LastOrDefault() != null)
+        for(int i = cooridorList.Count - 1; i >= 0; i--)
         {
+            if (cooridorList[i].cooridorBlocked)
+            {
+                Destroy(cooridorList[i].gameObject);
+                cooridorList.RemoveAt(i);
+                continue;
+            }
+        }
             for (int i = 0; i < cooridorList.Count; i++)
             {
-                if (cooridorList[i].cooridorBlocked)
-                {
-                    Destroy(cooridorList[i].gameObject);
-                    cooridorList.Remove(cooridorList[i]);
-
-                }
-                else if (cooridorList[i].generateRoom)
+                if (cooridorList[i].generateRoom)
                 {
                     posX = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).x;
                     posY = (cooridorList[i].currentPos + cardinalDirections[(int)cooridorList[i].currentDirection]).y;
@@ -162,7 +163,6 @@ public class RoomManager : MonoBehaviour
                     }
                 }
             }
-        }
     }
     /// <summary>
     /// 
