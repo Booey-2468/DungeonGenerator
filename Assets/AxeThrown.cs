@@ -17,9 +17,9 @@ public class AxeThrown : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Rotate(new Vector3Int(0, 0, -10));
         if (hasBeenCalled) 
         {
+            transform.Rotate(new Vector3Int(0, 0, -10));
             AxeThrow();
         }
 
@@ -27,13 +27,14 @@ public class AxeThrown : MonoBehaviour
     void AxeThrow()
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.AddForce(initialDirection * 10);
+        rb.AddForce(initialDirection * 10 * Time.deltaTime);
     }
     void OnTriggerEnter2D(Collider2D c)
     {
-        if(c.transform.gameObject == player)
+        if(c.gameObject == player)
         {
-            Destroy(this.gameObject);
+            player.GetComponent<PlayerMovement>().playerHealth--;
+            Destroy(gameObject);
         }
     }
 

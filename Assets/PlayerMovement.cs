@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D body;
+    [HideInInspector] public int playerHealth = 5;
+    
     // Start is called before the first frame update
     void Start()
     {

@@ -6,24 +6,35 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     private GameObject player;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 3;
+    [HideInInspector]public float enemyHealth = 20;
+    [SerializeField] private int attackDamage = 1;
     private Vector3 originalPosition;
-    public int posX = 0;
-    public int posY = 0;
-    public int sizeX = 0;
-    public int sizeY = 0;
+    [HideInInspector]public int posX;
+    [HideInInspector]public int posY;
+    [HideInInspector] public int sizeX;
+    [HideInInspector] public int sizeY;
     // Start is called before the first frame update
     void Start()
     {
         originalPosition = transform.position;
         player = GameObject.FindWithTag("Player");   
-        if (speed == 0)
-            speed = 3;   
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, (float) speed * Time.deltaTime) ;
+        if(enemyHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+        if ((player.transform.position.x >= posX && player.transform.position.x <= posX + sizeX) && (player.transform.position.y >= posY && player.transform.position.y <= posY + sizeY))
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, (float)speed * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, originalPosition, (float)speed * Time.deltaTime);
+        }
     }
 }

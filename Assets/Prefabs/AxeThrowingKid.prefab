@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -8923464234863566517}
   - component: {fileID: 7006114692703051679}
   - component: {fileID: 7659280311144002387}
+  - component: {fileID: -3744617830502013954}
   m_Layer: 0
   m_Name: AxeThrowingKid
   m_TagString: Untagged
@@ -163,6 +164,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  enemyhealth: 15
+  posX: 0
+  posY: 0
+  sizeX: 0
+  sizeY: 0
+--- !u!114 &-3744617830502013954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371537156775062013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efcdf205b7d62594f946e5e8069dd415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4628848729348163111
 GameObject:
   m_ObjectHideFlags: 0

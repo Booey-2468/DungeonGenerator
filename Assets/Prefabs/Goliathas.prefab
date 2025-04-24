@@ -161,4 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea65940a658092b45ba394e981ece3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  speed: 3
+  enemyhealth: 35
+  posX: 0
+  posY: 0
+  sizeX: 0
+  sizeY: 0

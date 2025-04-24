@@ -42,7 +42,7 @@ public class RoomManager : MonoBehaviour
     };
     // Start is called before the first frame update
 
-    int posX = -5, posY = -5, sizeX = 10, sizeY = 10;
+    private int posX = -5, posY = -5, sizeX = 10, sizeY = 10;
     void Awake()
     {
         InstantiateRoom(posX, posY, sizeX, sizeY);
