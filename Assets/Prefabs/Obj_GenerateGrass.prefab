@@ -48,5 +48,8 @@ MonoBehaviour:
   grass: {fileID: -1681693119, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   grass2: {fileID: 1072247296, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   grass3: {fileID: -1665449778, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  thumperPrefab: {fileID: 3219389456337279653, guid: f526318728fcc534298048d1e87fe055, type: 3}
+  axeGirlPrefab: {fileID: 371537156775062013, guid: 2cb462534f5c1ee47b054c48696c0dca, type: 3}
+  goliatahasPrefab: {fileID: 3076782969242381354, guid: 5e7e46cc960104241ba3504d52274af3, type: 3}
   walls: {fileID: 0}
   gridOffset: 1

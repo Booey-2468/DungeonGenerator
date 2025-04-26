@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 645d0e36a9a9c8544b31e439562a0e67
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - topWall: {fileID: -303163114, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  - bottomWall: {instanceID: 0}
+  - leftWall: {instanceID: 0}
+  - rightWall: {fileID: 1171244567, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  - topLeftCorner: {fileID: -960659107, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  - topRightCorner: {fileID: -999308992, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  - bottomLeftCorner: {instanceID: 0}
+  - bottomRightCorner: {instanceID: 0}
+  - stoppingSprite: {instanceID: 0}
+  - wallsTileMap: {instanceID: 0}
+  - grassTileMap: {instanceID: 0}
+  - roomPrefab: {instanceID: 0}
+  - exitPrefab: {instanceID: 0}
+  - cooridorPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -14,10 +14,10 @@ public enum Direction
 public class GenerateExit : MonoBehaviour
 {
     public GenerateWall walls;
-    public Sprite topLeftCorner;
-    public Sprite topRightCorner;
-    public Sprite bottomLeftCorner;
-    public Sprite bottomRightCorner;
+    [SerializeField] private Sprite topLeftCorner;
+    [SerializeField] private Sprite topRightCorner;
+    [SerializeField] private Sprite bottomLeftCorner;
+    [SerializeField] private Sprite bottomRightCorner;
     public Tilemap wallsTilemap;
     public List<Vector3Int> entryPos = new List<Vector3Int>();
     public Direction exitDirection;

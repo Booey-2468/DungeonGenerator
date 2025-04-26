@@ -44,13 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad06c186646e3f40b9993f0250f7bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topWall: {fileID: 0}
-  bottomWall: {fileID: 0}
-  leftWall: {fileID: 0}
-  rightWall: {fileID: 0}
-  topLeftCorner: {fileID: 0}
-  topRightCorner: {fileID: 0}
-  bottomLeftCorner: {fileID: 0}
-  bottomRightCorner: {fileID: 0}
+  start: {fileID: 0}
+  topWall: {fileID: -303163114, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  bottomWall: {fileID: 1200152861, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  leftWall: {fileID: 549679067, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  rightWall: {fileID: 1171244567, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  topLeftCorner: {fileID: -960659107, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  topRightCorner: {fileID: -999308992, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  bottomLeftCorner: {fileID: 168700486, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  bottomRightCorner: {fileID: 502968462, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
+  stoppingSprite: {fileID: -1676260070, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
   wallsTilemap: {fileID: 0}
-  cooridorPos: []
+  currentPos: {x: 0, y: 0, z: 0}
+  currentDirection: 0
+  cardinalDirections: []
+  cooridorBlocked: 0
+  generateRoom: 0
+  hasBeenCalled: 0

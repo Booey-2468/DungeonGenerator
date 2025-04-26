@@ -115,7 +115,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &7006114692703051679
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -163,12 +163,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea65940a658092b45ba394e981ece3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  enemyhealth: 15
+  speed: 1
+  enemyHealth: 20
+  attackDamage: 1
   posX: 0
   posY: 0
   sizeX: 0
   sizeY: 0
+  hasBeenCalled: 0
 --- !u!114 &-3744617830502013954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcdf205b7d62594f946e5e8069dd415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axePrefab: {fileID: 3143609123086759654, guid: 94c8b30c2ab2e9f44a4758670eba2917, type: 3}
 --- !u!1 &4628848729348163111
 GameObject:
   m_ObjectHideFlags: 0

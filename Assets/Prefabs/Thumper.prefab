@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8195529505174990277}
   - component: {fileID: 3659271973121132618}
   - component: {fileID: 7955996706198598342}
+  - component: {fileID: -141622074664220248}
   m_Layer: 0
   m_Name: Thumper
   m_TagString: Untagged
@@ -100,11 +101,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  enemyhealth: 20
+  enemyHealth: 20
+  attackDamage: 1
   posX: 0
   posY: 0
   sizeX: 0
   sizeY: 0
+  hasBeenCalled: 0
 --- !u!50 &3659271973121132618
 Rigidbody2D:
   serializedVersion: 4
@@ -113,7 +116,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3219389456337279653}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -131,7 +134,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &7955996706198598342
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -167,3 +170,23 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
+--- !u!114 &-141622074664220248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3219389456337279653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea65940a658092b45ba394e981ece3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  enemyHealth: 35
+  attackDamage: 1
+  posX: 0
+  posY: 0
+  sizeX: 0
+  sizeY: 0
+  hasBeenCalled: 0

@@ -5,24 +5,25 @@ using UnityEngine.Tilemaps;
 
 public class GenerateWall : MonoBehaviour
 {
-    public Tilemap wallsTilemap;
-    public Sprite topWall;
-    public Sprite bottomWall;
-    public Sprite leftWall;
-    public Sprite rightWall;
-    public Sprite topLeftCorner;
-    public Sprite topRightCorner;
-    public Sprite bottomLeftCorner;
-    public Sprite bottomRightCorner;
-    public int sizeX;
-    public int sizeY;
-    public int posX;
-    public int posY;
-    public int gridOffset = 1;
+    [HideInInspector] public Tilemap wallsTilemap;
+    [SerializeField] private Sprite topWall;
+    [SerializeField] private Sprite bottomWall;
+    [SerializeField] private Sprite leftWall;
+    [SerializeField] private Sprite rightWall;
+    [SerializeField] private Sprite topLeftCorner;
+    [SerializeField] private Sprite topRightCorner;
+    [SerializeField] private Sprite bottomLeftCorner;
+    [SerializeField] private Sprite bottomRightCorner;
+    [HideInInspector] public int sizeX;
+    [HideInInspector] public int sizeY;
+    [HideInInspector] public int posX;
+    [HideInInspector] public int posY;
+    private int gridOffset = 1;
     private Sprite currentSelection;
-    public GameObject grassPrefab;
-    public Tilemap grassTilemap;
-    public List<Vector3Int> wallList;
+    [HideInInspector] public bool spawnEnemies = true;
+    [SerializeField] private GameObject grassPrefab;
+    [HideInInspector] public Tilemap grassTilemap;
+    [HideInInspector] public List<Vector3Int> wallList;
 
 
 
@@ -36,10 +37,12 @@ public class GenerateWall : MonoBehaviour
     // Update is called once per frame
     public void CreateRoom()
     {
-        GenerateGrass createGrass = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
-        createGrass.backgroundTileMap = grassTilemap;
-        createGrass.walls = this;
-        createGrass.CreateGrass();
+        GenerateGrass createBackdrop= Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
+        createBackdrop.backgroundTileMap = grassTilemap;
+        createBackdrop.walls = this;
+        createBackdrop.spawnEnemies = spawnEnemies;
+        createBackdrop.CreateBackdrop();
+
 
         for (int x = -1; x <= sizeX; x++)
         {

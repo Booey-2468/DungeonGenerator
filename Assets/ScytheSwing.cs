@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,9 +12,10 @@ public class ScytheSwing : MonoBehaviour
     [SerializeField] private GameObject thumper;
     [SerializeField] private GameObject axeGirl;
     [SerializeField] private GameObject goliathas;
-    private float timerDuration = 3;
+    private float timerDuration = 0.5f;
     private float timer;
     private int scytheDamage = 5;
+    private int pushBackMagnitude = 500;
 
     // Start is called before the first frame update
     void Start()
@@ -25,32 +27,61 @@ public class ScytheSwing : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         ChooseScytheLocation();
-
     }
-    void ChooseScytheLocation()
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+    
+        if (IsEnemy(collision) && collision.gameObject.GetComponent<EnemyMovement>() != null && Input.GetKey(KeyCode.Mouse0))
+        {
+            Vector2 pushBackDirection = (gameObject.transform.position - collision.gameObject.transform.position) * -1;
+
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(pushBackDirection * pushBackMagnitude * Time.deltaTime, ForceMode2D.Impulse);
+            collision.gameObject.GetComponent<EnemyMovement>().enemyHealth -= scytheDamage;
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (IsEnemy(collision) && Input.GetKey(KeyCode.Mouse0))
+        {
+            if (timer >= 0)
+            {
+                timer -= Time.deltaTime;
+            }
+            else if (collision.gameObject.GetComponent<EnemyMovement>() != null && collision.gameObject.GetComponent<Rigidbody2D>() != null)
+            {
+                Vector2 pushBackDirection = (gameObject.transform.position - collision.gameObject.transform.position) * -1;
+
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(pushBackDirection * pushBackMagnitude * Time.deltaTime, ForceMode2D.Impulse);
+                collision.gameObject.GetComponent<EnemyMovement>().enemyHealth -= scytheDamage;
+                timer = timerDuration;
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (IsEnemy(collision))
+        {
+            timer = timerDuration;
+        }
+    }
+
+    private void ChooseScytheLocation()
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
             transform.Rotate(new Vector3(0, 0, -10));
-            if (Input.GetAxis("Horizontal") > 0.1)
+            if(Input.GetAxis("Horizontal") != 0 && Input.GetAxis("Vertical") != 0)
             {
-                transform.localPosition = Vector3.right;
+                transform.localPosition = new Vector3Int(Mathf.CeilToInt(Input.GetAxis("Horizontal")), Mathf.CeilToInt(Input.GetAxis("Vertical")), 0);
             }
-            else if (Input.GetAxis("Horizontal") < -0.1)
+            else
             {
-                transform.localPosition = Vector3.left;
-            }
-            else if (Input.GetAxis("Vertical") > 0.1)
-            {
-                transform.localPosition = Vector3.up;
-
-            }
-            else if (Input.GetAxis("Vertical") < -0.1)
-            {
-                transform.localPosition = Vector3.down;
+                transform.localPosition = originalPosition;
             }
         }
         else
@@ -59,33 +90,10 @@ public class ScytheSwing : MonoBehaviour
             transform.rotation = originalRotation;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private bool IsEnemy(Collider2D collision)
     {
-        if (collision.gameObject == thumper || collision.gameObject == axeGirl || collision.gameObject == goliathas)
-        {
-            collision.gameObject.GetComponent<EnemyMovement>().enemyHealth -= scytheDamage;
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject == thumper || collision.gameObject == axeGirl || collision.gameObject == goliathas)
-        {
-            if (timer >= 0)
-            {
-                timer -= Time.deltaTime;
-            }
-            else
-            {
-                collision.gameObject.GetComponent<EnemyMovement>().enemyHealth -= scytheDamage;
-                timer = 3;
-            }
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject == thumper || collision.gameObject == axeGirl || collision.gameObject == goliathas)
-        {
-            timer = timerDuration;
-        }
+        return PrefabUtility.GetPrefabInstanceHandle(collision.gameObject) == PrefabUtility.GetPrefabInstanceHandle(thumper)
+            || PrefabUtility.GetPrefabInstanceHandle(collision.gameObject) == PrefabUtility.GetPrefabInstanceHandle(axeGirl)
+            || PrefabUtility.GetPrefabInstanceHandle(collision.gameObject) == PrefabUtility.GetPrefabInstanceHandle(goliathas);
     }
 }

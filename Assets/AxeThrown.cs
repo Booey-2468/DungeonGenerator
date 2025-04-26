@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class AxeThrown : MonoBehaviour
 {
@@ -27,15 +28,20 @@ public class AxeThrown : MonoBehaviour
     void AxeThrow()
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.AddForce(initialDirection * 10 * Time.deltaTime);
+        rb.AddForce(initialDirection * 500 * Time.deltaTime);
     }
     void OnTriggerEnter2D(Collider2D c)
     {
         if(c.gameObject == player)
         {
-            player.GetComponent<PlayerMovement>().playerHealth--;
+            player.GetComponent<PlayerScript>().playerHealth--;
             Destroy(gameObject);
         }
+        else if(c.gameObject.GetComponent<TilemapCollider2D>() != null)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 }

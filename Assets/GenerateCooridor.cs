@@ -7,32 +7,32 @@ using UnityEngine.UI;
 
 public class GenerateCooridor : MonoBehaviour
 {
-    public GenerateExit start;
-    public Sprite topWall;
-    public Sprite bottomWall;
-    public Sprite leftWall;
-    public Sprite rightWall;
-    public Sprite topLeftCorner;
-    public Sprite topRightCorner;
-    public Sprite bottomLeftCorner;
-    public Sprite bottomRightCorner;
-    public Sprite stoppingSprite;
+    [HideInInspector] public GenerateExit start;
+    [SerializeField] private Sprite topWall;
+    [SerializeField] private Sprite bottomWall;
+    [SerializeField] private Sprite leftWall;
+    [SerializeField] private Sprite rightWall;
+    [SerializeField] private Sprite topLeftCorner;
+    [SerializeField] private Sprite topRightCorner;
+    [SerializeField] private Sprite bottomLeftCorner;
+    [SerializeField] private Sprite bottomRightCorner;
+    [SerializeField] private Sprite stoppingSprite;
     public Tilemap wallsTilemap;
     private Vector3Int pos1;
     private Vector3Int pos2;
     private Vector3Int pos3;
     public Vector3Int currentPos;
-    public Direction currentDirection;
-    Direction bannedDirection;
+    [HideInInspector] public Direction currentDirection;
+    private Direction bannedDirection;
     private int moveNum = 1;
     private bool isCorner = false;
     private int cooridorCount = 0;
-    public List<List<Vector3Int>> cooridorPos = new List<List<Vector3Int>>();
-    public List<Vector3Int> cardinalDirections;
-    public bool cooridorBlocked = false;
+    [HideInInspector] public List<List<Vector3Int>> cooridorPos = new List<List<Vector3Int>>();
+    [HideInInspector] public List<Vector3Int> cardinalDirections;
+    [HideInInspector] public bool cooridorBlocked = false;
     private bool startRepeat = false;
-    public bool generateRoom = false;
-    public bool hasBeenCalled = false;
+    [HideInInspector] public bool generateRoom = false;
+    [HideInInspector] public bool hasBeenCalled = false;
     
 
     // Start is called before the first frame update
