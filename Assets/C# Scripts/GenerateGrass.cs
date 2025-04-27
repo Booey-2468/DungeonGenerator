@@ -21,15 +21,19 @@ public class GenerateGrass : MonoBehaviour
 
     [SerializeField] private GameObject heartPrefab;
 
+    [SerializeField] private GameObject winConditionPrefab;
+
     [HideInInspector]public GenerateWall walls;
     private int gridOffset = 1;
     private int enemyCount = 0;
     private int maxEnemyCount = 10;
     private int heartCount = 0;
     private int maxHeartCount = 5;
+    private bool shouldGoliathasSpawn = false;
     private List<Vector3Int> tilePos = new List<Vector3Int>();
     private List<List<int>> coordVector;
     [HideInInspector] public bool spawnEnemies = true;
+    [HideInInspector] public bool lastRoom = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +43,9 @@ public class GenerateGrass : MonoBehaviour
     public void CreateBackdrop()
     {
         enemyCount = 0;
+
+        shouldGoliathasSpawn = lastRoom;
+
         maxEnemyCount = UnityEngine.Random.Range(2, 15);
 
         maxHeartCount = UnityEngine.Random.Range(0, 6);
@@ -54,19 +61,14 @@ public class GenerateGrass : MonoBehaviour
                 bool shouldEnemyExist = (UnityEngine.Random.Range(1, 3) == 1 && (x > walls.posX && x < walls.posX + walls.sizeX) && (y > walls.posY && y < walls.posY + walls.sizeY));
                 if(enemyCount <= maxEnemyCount && shouldEnemyExist && spawnEnemies)
                 {
-                    int randX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
-                    int randY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
-
-                    ChooseEnemy(randX, randY);
+                    ChooseEnemy();
                 }
 
                 if (shouldEnemyExist && spawnEnemies)
                 {
-                    int randX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
-                    int randY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
-                    SpawnHearts(randX, randY);
+                    SpawnHearts();
                 }
-
+                SpawnWinCondition();
                 Vector3Int pos = new Vector3Int(x * gridOffset, y * gridOffset, 0);
                 backgroundTileMap.SetTile(pos, new Tile() { sprite = groundSprite });
                 tilePos.Add(pos);
@@ -88,8 +90,11 @@ public class GenerateGrass : MonoBehaviour
     /// </summary>
     /// <param name="spawnX"> Used for the x spawn location of the heart pickup</param>
     /// <param name="spawnY"> Used for the y spawn location of the heart pickup</param>
-    private void SpawnHearts( int spawnX, int spawnY)
+    private void SpawnHearts()
     {
+        int spawnX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
+        int spawnY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
+
         if (!SpaceFilled(spawnX, spawnY) && heartCount < maxHeartCount && heartPrefab != null)  //Ensures that the space isnt filled there isn't too many hearts and the heart prefab isnt null
         {
             coordVector.Add(new List<int> {spawnX, spawnY});    // Adds coordinates to prefab and ups the heart count the spawns the heart
@@ -99,8 +104,39 @@ public class GenerateGrass : MonoBehaviour
         }
     }
 
-    private void ChooseEnemy(int spawnX, int spawnY)
+    void SpawnWinCondition()
     {
+        int spawnX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
+        int spawnY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
+        if (lastRoom && !SpaceFilled(spawnX, spawnY) && winConditionPrefab != null)
+        {
+            coordVector.Add(new List<int> { spawnX, spawnY });    // Adds coordinates to prefab and spawns win condition and resets lastRoom
+            Vector3Int crownSpawn = new Vector3Int(spawnX, spawnY);
+
+            Instantiate(winConditionPrefab, crownSpawn, UnityEngine.Quaternion.identity);
+            lastRoom = false;
+
+        }
+
+        spawnX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
+        spawnY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
+
+        if (shouldGoliathasSpawn && !SpaceFilled(spawnX, spawnY) && goliatahasPrefab != null)
+        {
+            coordVector.Add(new List<int> { spawnX, spawnY });    // Adds coordinates to prefab and spawns win goliathas
+            Vector3Int goliathasSpawn = new Vector3Int(spawnX, spawnY);
+
+            Instantiate(goliatahasPrefab, goliathasSpawn, UnityEngine.Quaternion.identity);
+
+            shouldGoliathasSpawn = false;
+        }
+    }
+
+
+    private void ChooseEnemy()
+    {
+        int spawnX = UnityEngine.Random.Range(walls.posX + 1, walls.posX + walls.sizeX);
+        int spawnY = UnityEngine.Random.Range(walls.posY + 1, walls.posY + walls.sizeY);
         int randomEnemy = UnityEngine.Random.Range(1, 100);
 
         Vector3Int randomEnemyPos = new Vector3Int(spawnX, spawnY, 0);

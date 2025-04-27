@@ -32,7 +32,7 @@ public class RoomManager : MonoBehaviour
     private List<GenerateExit> exitList = new List<GenerateExit>();
     private List<GenerateCooridor> cooridorList = new List<GenerateCooridor>();
     private float timer;
-    private float timerDuration = 10;
+    private float timerDuration = 6;
     private int maxRooms = 10;
 
     private List<Vector3Int> cardinalDirections = new List<Vector3Int> 
@@ -92,7 +92,7 @@ public class RoomManager : MonoBehaviour
         {
             timer -= Time.deltaTime;
         }
-        else if(totalRoomList.Count <= 2 && timer <= 0)
+        else if(totalRoomList.Count <= 3 && timer <= 0)
         {
             SceneManager.LoadScene("GameStart");
         }

@@ -52,5 +52,7 @@ MonoBehaviour:
   axeGirlPrefab: {fileID: 371537156775062013, guid: 2cb462534f5c1ee47b054c48696c0dca, type: 3}
   goliatahasPrefab: {fileID: 3076782969242381354, guid: 5e7e46cc960104241ba3504d52274af3, type: 3}
   heartPrefab: {fileID: 7279516744721668126, guid: 83b8aecb5897baf4c9e55a1ea10fa860, type: 3}
+  winConditionPrefab: {fileID: 7944635140359364463, guid: 52c27eac100feb540a8fa4b73b49582b, type: 3}
   walls: {fileID: 0}
   spawnEnemies: 1
+  lastRoom: 0

@@ -26,15 +26,6 @@ public class GenerateWall : MonoBehaviour
     [HideInInspector] public Tilemap grassTilemap;
     [HideInInspector] public List<Vector3Int> wallList;
 
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     public void CreateRoom()
     {
@@ -42,6 +33,7 @@ public class GenerateWall : MonoBehaviour
         createBackdrop.backgroundTileMap = grassTilemap;
         createBackdrop.walls = this;
         createBackdrop.spawnEnemies = spawnEnemies;
+        createBackdrop.lastRoom = lastRoom;
         createBackdrop.CreateBackdrop();
 
 
