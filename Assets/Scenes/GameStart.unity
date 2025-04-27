@@ -423,6 +423,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1571899394, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
     - target: {fileID: 3512638288140246987, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
+      propertyPath: pauseMenu
+      value: 
+      objectReference: {fileID: 3438041226291687807, guid: f3a249568e4a7f445bba9e6a46eb7a11, type: 3}
+    - target: {fileID: 3512638288140246987, guid: 2edc17fbf84419e4587fcd7a713d4d3a, type: 3}
       propertyPath: brokenHeart
       value: 
       objectReference: {fileID: -2041742456, guid: 097de47ff23f7da41a6bae7cfdf7028b, type: 3}
@@ -968,10 +972,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

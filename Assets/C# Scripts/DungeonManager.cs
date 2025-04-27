@@ -47,10 +47,15 @@ public class RoomManager : MonoBehaviour
     private int posX = -5, posY = -5, sizeX = 10, sizeY = 10;
     void Start()
     {
-        if (GameObject.FindGameObjectWithTag("DataStore").GetComponent<DungeonData>() != null)
+        if (GameObject.FindGameObjectWithTag("DataStore") != null)
         {
             maxRooms = GameObject.FindGameObjectWithTag("DataStore").GetComponent<DungeonData>().maxRooms;
         }
+        else
+        {
+            maxRooms = 10;
+        }
+
         InstantiateRoom(posX, posY, sizeX, sizeY, false);
         timer = timerDuration;
     }
@@ -237,6 +242,7 @@ public class RoomManager : MonoBehaviour
         currentRoom.sizeY = sizeY;
         currentRoom.grassTilemap = grassTileMap; 
         currentRoom.spawnEnemies = spawnEnemies;
+        currentRoom.lastRoom = (totalRoomList.Count + 1 >= maxRooms);
         currentRoom.CreateRoom();
 
         roomList.Add(currentRoom);

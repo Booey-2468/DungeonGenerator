@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     [HideInInspector] public int playerHealth;
+    [HideInInspector] public int maxPlayerHealth;
     [SerializeField] private Image heart1;
     [SerializeField] private Image heart2;
     [SerializeField] private Image heart3;
@@ -15,22 +16,31 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private Sprite brokenHeart;
     [SerializeField] private Sprite halfHeart;
     [SerializeField] private Sprite fullHeart;
+    [SerializeField] private GameObject pauseMenu;
     private Rigidbody2D body;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        playerHealth = 10;
+        maxPlayerHealth = 10;
+        playerHealth = maxPlayerHealth;
         body = GetComponent<Rigidbody2D>();
     }
     void Update()
     {
+        
         if (playerHealth <= 0)
         {
             SceneManager.LoadScene("GameStart");
         }
         UpdateHealth();
+
+        if (Input.GetKeyDown(KeyCode.P) && pauseMenu != null && Time.timeScale == 1)
+        {
+            Time.timeScale = 0;
+            Instantiate(pauseMenu);
+        }
     }
     // Update is called once per frame
     void FixedUpdate()
