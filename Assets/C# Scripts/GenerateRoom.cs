@@ -29,12 +29,13 @@ public class GenerateWall : MonoBehaviour
     // Update is called once per frame
     public void CreateRoom()
     {
-        GenerateGrass createBackdrop= Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
+        GenerateGrass createBackdrop = Instantiate(grassPrefab, new Vector3Int(0, 0, 0), Quaternion.identity).GetComponent<GenerateGrass>();
         createBackdrop.backgroundTileMap = grassTilemap;
         createBackdrop.walls = this;
         createBackdrop.spawnEnemies = spawnEnemies;
         createBackdrop.lastRoom = lastRoom;
         createBackdrop.CreateBackdrop();
+        Destroy(createBackdrop);
 
 
         for (int x = -1; x <= sizeX; x++)

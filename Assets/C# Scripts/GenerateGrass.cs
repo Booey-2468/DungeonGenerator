@@ -74,6 +74,7 @@ public class GenerateGrass : MonoBehaviour
                 tilePos.Add(pos);
             }
         }
+
     }
 
     private bool SpaceFilled(int spawnX, int spawnY)
